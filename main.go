@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello!")
-	var dirs = lsh.LsHaving()
+	var dirs = lsh.LsHaving(nil, ".")
 	fmt.Println(dirs)
 }
