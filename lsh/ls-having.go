@@ -12,10 +12,10 @@ import (
 
 type Options struct {
 	Depth        int
-	Exclude      glob.Glob
+	Excludes     []glob.Glob
 	FlagFile     glob.Glob
 	CheckFile    string // "" means it is not used
-	CheckRegexp  regexp.Regexp
+	CheckRegexp  *regexp.Regexp
 	CheckInverse bool
 }
 
@@ -67,7 +67,7 @@ func shouldCheck(options *Options, dir *dirEntryEx) bool {
 	if options.Depth >= 0 && options.Depth < dir.Depth {
 		return false
 	}
-	if options.Exclude != nil && options.Exclude.Match(dir.Path) {
+	if options.Excludes != nil && anyGlobMatch(options.Excludes, dir.Path) {
 		return false
 	}
 	return true
@@ -85,8 +85,14 @@ func match(options *Options, dir *dirEntryEx, entries *[]dirEntryEx) bool {
 	if options.CheckFile == "" {
 		checkFileMismatch = false
 	} else {
-		// read the file
-		// do regexp match
+		checkFilePath := filepath.Join(dir.Path, options.CheckFile)
+		checkFileContent, err := os.ReadFile(checkFilePath)
+		if err != nil {
+			checkFileMismatch = true
+		} else {
+			checkFileMismatch = !options.CheckRegexp.Match(checkFileContent)
+			checkFileMismatch = checkFileMismatch != options.CheckInverse
+		}
 	}
 	return foundFlagFile && !checkFileMismatch
 }
