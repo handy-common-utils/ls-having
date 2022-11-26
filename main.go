@@ -36,26 +36,22 @@ func main() {
 		"n", "no-default-excludes",
 		"s", "only-subdirectories",
 	)
+	flag.Usage = func() {
+		// do nothing, just to avoid getopt to show usage after warning/error info
+	}
 	getopt.Parse()
+
+	if *optHelp {
+		printUsageAndExit("")
+	}
 
 	var optRootDir = "."
 	if len(flag.Args()) > 0 {
 		optRootDir = flag.Arg(0)
 	}
 
-	if *optHelp || len(*optFlagFile) == 0 {
-		fmt.Println("Usage: ls-having -f name-or-glob [options] [root-dir]")
-		fmt.Println("Options:")
-		getopt.PrintDefaults()
-		fmt.Println("References:")
-		fmt.Println("  Glob syntax: https://github.com/gobwas/glob#example")
-		fmt.Println("  Regexp syntax: https://pkg.go.dev/regexp/syntax")
-		fmt.Println("  Home page: https://github.com/handy-common-utils/ls-having")
-		if *optHelp {
-			os.Exit(0)
-		} else {
-			os.Exit(1)
-		}
+	if len(*optFlagFile) == 0 {
+		printUsageAndExit("flag file has not been specified")
 	}
 
 	if !*optNoDefaultExcludes {
@@ -95,4 +91,23 @@ func (i *arrayFlag) String() string {
 func (i *arrayFlag) Set(value string) error {
 	*i = append(*i, value)
 	return nil
+}
+
+func printUsageAndExit(errorString string) {
+	var writer = os.Stdout
+	var exitCode = 0
+	if len(errorString) > 0 {
+		writer = os.Stderr
+		exitCode = 1
+		fmt.Fprintln(writer, "Error: "+errorString)
+	}
+	fmt.Println("Usage: ls-having -f name-or-glob [options] [root-dir]")
+	fmt.Println("Options:")
+	getopt.CommandLine.SetOutput(os.Stdout)
+	getopt.PrintDefaults()
+	fmt.Println("References:")
+	fmt.Println("  Glob syntax: https://github.com/gobwas/glob#example")
+	fmt.Println("  Regexp syntax: https://pkg.go.dev/regexp/syntax")
+	fmt.Println("  Home page: https://github.com/handy-common-utils/ls-having")
+	os.Exit(exitCode)
 }
