@@ -23,7 +23,7 @@ func main() {
 	var optExcludes arrayFlag
 	flag.Var(&optExcludes, "exclude", "glob of the directories to exclude")
 	var optNoDefaultExcludes = flag.Bool("no-default-excludes", false, "don't apply default excludes")
-	var optOnlySubdirectories = flag.Bool("only-subdirectories", false, "only check subdirectories / exclude root directory")
+	var optOnlySubdirectories = flag.Bool("subdirectories-only", false, "don't return root directory even if it meets conditions")
 
 	getopt.Aliases(
 		"h", "help",
@@ -34,7 +34,7 @@ func main() {
 		"i", "check-inverse",
 		"x", "exclude",
 		"n", "no-default-excludes",
-		"s", "only-subdirectories",
+		"s", "subdirectories-only",
 	)
 	flag.Usage = func() {
 		// do nothing, just to avoid getopt to show usage after warning/error info

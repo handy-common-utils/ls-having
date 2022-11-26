@@ -68,9 +68,6 @@ func shouldCheck(options *Options, dir *dirEntryEx) bool {
 	if options.Depth >= 0 && options.Depth < dir.Depth {
 		return false
 	}
-	if options.ExcludeRoot && dir.Depth == 0 {
-		return false
-	}
 	if options.Excludes != nil && anyGlobMatch(options.Excludes, dir.Path) {
 		return false
 	}
@@ -78,6 +75,10 @@ func shouldCheck(options *Options, dir *dirEntryEx) bool {
 }
 
 func match(options *Options, dir *dirEntryEx, entries *[]dirEntryEx) bool {
+	if options.ExcludeRoot && dir.Depth == 0 {
+		return false
+	}
+
 	foundFlagFile := false
 	for _, entry := range *entries {
 		if options.FlagFile.Match(entry.Entry.Name()) {
