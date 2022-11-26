@@ -25,6 +25,15 @@ and the `package.json` file must contain text `mocha`:
 ```
 ls-having -f 'package.json' -c package.json -e 'mocha'
 ```
+
+Find all subdirectories under `./` (the root directory `./` is excluded)
+having `package.json`,
+and also having `serverless.yml` file contain text `datadog`:
+
+```
+ls-having -f 'package.json' -c serverless.yml -e 'datadog' -s
+```
+
 ## Usage - as a Go package
 
 ```go

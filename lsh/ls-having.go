@@ -13,6 +13,7 @@ import (
 type Options struct {
 	Depth        int
 	Excludes     []glob.Glob
+	ExcludeRoot  bool
 	FlagFile     glob.Glob
 	CheckFile    string // "" means it is not used
 	CheckRegexp  *regexp.Regexp
@@ -65,6 +66,9 @@ func shouldCheck(options *Options, dir *dirEntryEx) bool {
 		return false
 	}
 	if options.Depth >= 0 && options.Depth < dir.Depth {
+		return false
+	}
+	if options.ExcludeRoot && dir.Depth == 0 {
 		return false
 	}
 	if options.Excludes != nil && anyGlobMatch(options.Excludes, dir.Path) {

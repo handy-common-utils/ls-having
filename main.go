@@ -23,6 +23,7 @@ func main() {
 	var optExcludes arrayFlag
 	flag.Var(&optExcludes, "exclude", "glob of the directories to exclude")
 	var optNoDefaultExcludes = flag.Bool("no-default-excludes", false, "don't apply default excludes")
+	var optOnlySubdirectories = flag.Bool("only-subdirectories", false, "only check subdirectories / exclude root directory")
 
 	getopt.Aliases(
 		"h", "help",
@@ -33,6 +34,7 @@ func main() {
 		"i", "check-inverse",
 		"x", "exclude",
 		"n", "no-default-excludes",
+		"s", "only-subdirectories",
 	)
 	getopt.Parse()
 
@@ -68,6 +70,7 @@ func main() {
 	var dirs = lsh.LsHaving(&lsh.Options{
 		Depth:        *optDepth,
 		Excludes:     compileGlobs(optExcludes, filepath.Separator),
+		ExcludeRoot:  *optOnlySubdirectories,
 		FlagFile:     glob.MustCompile(filepath.Join(*optFlagFile), filepath.Separator),
 		CheckFile:    *optCheckFile,
 		CheckRegexp:  regexp.MustCompile(*optCheckRegexp),
