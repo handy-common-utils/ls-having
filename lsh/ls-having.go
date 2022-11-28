@@ -14,7 +14,7 @@ type Options struct {
 	Depth        int
 	Excludes     []glob.Glob
 	ExcludeRoot  bool
-	FlagFile     glob.Glob
+	FlagFiles    []glob.Glob
 	CheckFile    string // "" means it is not used
 	CheckRegexp  *regexp.Regexp
 	CheckInverse bool
@@ -81,7 +81,7 @@ func match(options *Options, dir *dirEntryEx, entries *[]dirEntryEx) bool {
 
 	foundFlagFile := false
 	for _, entry := range *entries {
-		if options.FlagFile.Match(entry.Entry.Name()) {
+		if anyGlobMatch(options.FlagFiles, entry.Entry.Name()) {
 			foundFlagFile = true
 			break
 		}

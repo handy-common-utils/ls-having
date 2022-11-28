@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strings"
 
 	"github.com/gobwas/glob"
 	"github.com/handy-common-utils/ls-having/lsh"
@@ -16,12 +15,13 @@ import (
 func main() {
 	var optHelp = flag.Bool("help", false, "show help information")
 	var optDepth = flag.Int("depth", 5, "how deep to look into subdirectories, 0 means only look at root directory, -1 means no limit")
-	var optFlagFile = flag.String("flag-file", "", "name/glob of the flag file")
-	var optCheckFile = flag.String("check-file", "", "name of the additional file to check")
-	var optCheckRegexp = flag.String("check-regexp", ".*", "regular expression for testing the content of the check file")
+	var optFlagFiles arrayFlag
+	flag.Var(&optFlagFiles, "flag-file", "name or `glob` of the flag file, this option can appear multiple times")
+	var optCheckFile = flag.String("check-file", "", "`name` of the additional file to check")
+	var optCheckRegexp = flag.String("check-regexp", ".*", "regular `expression` for testing the content of the check file")
 	var optCheckInverse = flag.Bool("check-inverse", false, "regard regular expression not matching as positive")
 	var optExcludes arrayFlag
-	flag.Var(&optExcludes, "exclude", "glob of the directories to exclude")
+	flag.Var(&optExcludes, "exclude", "`glob` of the directories to exclude, this option can appear multiple times")
 	var optNoDefaultExcludes = flag.Bool("no-default-excludes", false, "don't apply default excludes")
 	var optOnlySubdirectories = flag.Bool("subdirectories-only", false, "don't return root directory even if it meets conditions")
 
@@ -50,7 +50,7 @@ func main() {
 		optRootDir = flag.Arg(0)
 	}
 
-	if len(*optFlagFile) == 0 {
+	if len(optFlagFiles) == 0 {
 		printUsageAndExit("flag file has not been specified")
 	}
 
@@ -67,7 +67,7 @@ func main() {
 		Depth:        *optDepth,
 		Excludes:     compileGlobs(optExcludes, filepath.Separator),
 		ExcludeRoot:  *optOnlySubdirectories,
-		FlagFile:     glob.MustCompile(filepath.Join(*optFlagFile), filepath.Separator),
+		FlagFiles:    compileGlobs(optFlagFiles, filepath.Separator),
 		CheckFile:    *optCheckFile,
 		CheckRegexp:  regexp.MustCompile(*optCheckRegexp),
 		CheckInverse: *optCheckInverse,
@@ -86,7 +86,7 @@ func compileGlobs(globStrings []string, separator rune) []glob.Glob {
 type arrayFlag []string
 
 func (i *arrayFlag) String() string {
-	return strings.Join(*i, ",")
+	return "xyz" // strings.Join(*i, ",")
 }
 func (i *arrayFlag) Set(value string) error {
 	*i = append(*i, value)
