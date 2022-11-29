@@ -1,0 +1,21 @@
+name: ls-having
+summary: List directories having specified flag files and meeting other conditions. 
+description: |
+  This is a tool that can list directories having specified flag files and optionally meeting other specified conditions.
+  It is handy for developers maintaining mono repos that have multiple projects in each repo.
+version: git
+grade: stable
+base: core20
+
+confinement: strict
+
+apps:
+  ls-having:
+    command: bin/ls-having
+    plugs:
+      - home
+parts:
+  ls-having:
+    plugin: go
+    source-type: local
+    source: .
