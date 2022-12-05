@@ -22,6 +22,28 @@ sudo snap install ls-having
 
 ## Usage - as a CLI tool
 
+### Help
+
+```
+Usage: ls-having -f name-or-glob [options] [root-dir]
+Options:
+  -c, --check-file name          name of the additional file to check
+  -i, --check-inverse            regard regular expression not matching as positive
+  -e, --check-regexp expression  regular expression for testing the content of the check file (default ".*")
+  -d, --depth int                how deep to look into subdirectories, 0 means only look at root directory, -1 means no limit (default 5)
+  -x, --exclude glob             glob of the directories to exclude, this option can appear multiple times
+  -f, --flag-file glob           name or glob of the flag file, this option can appear multiple times
+  -h, --help                     show help information
+  -n, --no-default-excludes      don't apply default excludes
+  -s, --subdirectories-only      don't return root directory even if it meets conditions
+References:
+  Glob syntax: https://github.com/gobwas/glob#example
+  Regexp syntax: https://pkg.go.dev/regexp/syntax
+  Home page: https://github.com/handy-common-utils/ls-having
+```
+
+### Examples
+
 Find all directories in `./` having `package.json` file,
 go as deep as 8 levels, and don't apply default excludes
 (such like `.git` and `node_modules`):
