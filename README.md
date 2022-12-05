@@ -4,7 +4,7 @@ This is a tool that can list directories having specified flag files and optiona
 
 ## Install
 
-*MacOS*
+**MacOS (Intel or Apple silicon)**
 
 `ls-having` can be installed through [Homebrew](https://brew.sh/):
 
@@ -12,7 +12,7 @@ This is a tool that can list directories having specified flag files and optiona
 brew install handy-common-utils/tap/ls-having
 ```
 
-*Linux*
+**Linux (all kinds of)**
 
 `ls-having` can be installed through [snap](https://snapcraft.io/docs/installing-snapd):
 
