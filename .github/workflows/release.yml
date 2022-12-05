@@ -34,3 +34,15 @@ jobs:
           # Your GoReleaser Pro key, if you are using the 'goreleaser-pro'
           # distribution:
           # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+  snapcraft:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: snapcore/action-build@v1
+      id: build
+    - uses: snapcore/action-publish@v1
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+      with:
+        snap: ${{ steps.build.outputs.snap }}
+        release: stable
