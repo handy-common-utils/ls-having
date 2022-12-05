@@ -12,12 +12,24 @@ This is a tool that can list directories having specified flag files and optiona
 brew install handy-common-utils/tap/ls-having
 ```
 
+To upgrade:
+
+```sh
+brew upgrade handy-common-utils/tap/ls-having
+```
+
 **Linux (all kinds of)**
 
 `ls-having` can be installed through [snap](https://snapcraft.io/docs/installing-snapd):
 
 ```sh
 sudo snap install ls-having
+```
+
+To upgrade:
+
+```sh
+sudo snap refresh ls-having
 ```
 
 ## Usage - as a CLI tool
