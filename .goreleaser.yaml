@@ -59,10 +59,6 @@ brews:
       # Repository name. (templateable)
       name: homebrew-tap
 
-      # Optionally a token can be provided, if it differs from the token
-      # provided to GoReleaser
-      token: "{{ .Env.HCU_HOMEBREW_TAP_GITHUB_TOKEN }}"
-
     # Template for the url which is determined by the given Token (github,
     # gitlab or gitea)
     #
