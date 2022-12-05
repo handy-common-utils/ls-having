@@ -2,6 +2,24 @@
 
 This is a tool that can list directories having specified flag files and optionally meeting other specified conditions.
 
+## Install
+
+*MacOS*
+
+`ls-having` can be installed through [Homebrew](https://brew.sh/):
+
+```sh
+brew install handy-common-utils/tap/ls-having
+```
+
+*Linux*
+
+`ls-having` can be installed through [snap](https://snapcraft.io/docs/installing-snapd):
+
+```sh
+sudo snap install ls-having
+```
+
 ## Usage - as a CLI tool
 
 Find all directories in `./` having `package.json` file,
