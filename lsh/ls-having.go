@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 
 	"github.com/gobwas/glob"
 )
@@ -23,6 +24,7 @@ type Options struct {
 func LsHaving(options *Options, dir string) []string {
 	var found []string = make([]string, 0, 100)
 	doLsHaving(options, &found, dir, 0, nil) // root dir has depth 0
+	sort.Strings(found)
 	return found
 }
 

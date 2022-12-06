@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 
 	"github.com/gobwas/glob"
 	"github.com/handy-common-utils/ls-having/lsh"
@@ -72,7 +73,7 @@ func main() {
 		CheckRegexp:  regexp.MustCompile(*optCheckRegexp),
 		CheckInverse: *optCheckInverse,
 	}, optRootDir)
-	fmt.Println(dirs)
+	fmt.Println(strings.Join(dirs, "\n"))
 }
 
 func compileGlobs(globStrings []string, separator rune) []glob.Glob {
