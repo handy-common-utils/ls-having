@@ -10,7 +10,18 @@ permissions:
   contents: write
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.19.3'
+          cache: true
+      - run: go build
+      - run: go test
   goreleaser:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -35,6 +46,7 @@ jobs:
           # distribution:
           # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   snapcraft:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
