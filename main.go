@@ -73,7 +73,9 @@ func main() {
 		CheckRegexp:  regexp.MustCompile(*optCheckRegexp),
 		CheckInverse: *optCheckInverse,
 	}, optRootDir)
-	fmt.Println(strings.Join(dirs, "\n"))
+	if len(dirs) > 0 {
+		fmt.Println(strings.Join(dirs, "\n"))
+	}
 }
 
 func compileGlobs(globStrings []string, separator rune) []glob.Glob {
