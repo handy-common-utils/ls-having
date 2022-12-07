@@ -34,6 +34,11 @@ To upgrade:
 sudo snap refresh ls-having
 ```
 
+**Manual download (works for Window)**
+
+You can just download, unzip, and copy the executable to anywhere you like:
+https://github.com/handy-common-utils/ls-having/releases
+
 ## Usage - as a CLI tool
 
 ### Help
@@ -55,6 +60,23 @@ References:
   Regexp syntax: https://pkg.go.dev/regexp/syntax
   Home page: https://github.com/handy-common-utils/ls-having
 ```
+
+### Default excludes
+
+By default, these directories will not be looked into:
+
+- `.git` and `**/.git`
+- `node_modules` and `**/node_modules`
+- `testdata` and `**/testdata`
+
+Flag `--no-default-excludes` can be used to disable this behaviour.
+
+Flag `--exclude` can be used to add more globs to the list.
+This flag can appear multiple times.
+
+Examples:
+
+- `ls-having -f package.json --no-default-excludes --exclude node_modules --exclude '**/node_modules' --exclude '**/sample'`.
 
 ### Examples
 
