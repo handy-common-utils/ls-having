@@ -78,4 +78,4 @@ jobs:
           git tag $NEW_TAG
           git push origin $NEW_TAG
           GOPROXY=proxy.golang.org go list -m "github.com/handy-common-utils/ls-having@$NEW_TAG"
-          curl "https://proxy.golang.org/github.com/handy-common-utils/ls-having/@v/$NEW_TAG.info"
+          curl -s "https://proxy.golang.org/github.com/handy-common-utils/ls-having/@v/$NEW_TAG.info"
