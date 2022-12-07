@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func run(t *testing.T, args ...string) (code int, stdout string, stderr string) {
+func runCliForTesting(t *testing.T, args ...string) (code int, stdout string, stderr string) {
 	cmd := exec.Command("go", append([]string{"run", "."}, args...)...)
 	var stdoutBuffer, stderrBuffer bytes.Buffer
 	cmd.Stdout = &stdoutBuffer
@@ -29,28 +29,28 @@ func run(t *testing.T, args ...string) (code int, stdout string, stderr string) 
 	return
 }
 
-func shouldPrintHelp(t *testing.T, stdout string, stderr string) {
+func shouldTestPrintHelp(t *testing.T, stdout string, stderr string) {
 	assert.Regexp(t, "^Usage:.*", stdout, "Should print usage to stdout")
 	assert.Regexp(t, "Options:", stdout, "Should print options to stdout")
 	assert.Regexp(t, "References:", stdout, "Should print references to stdout")
 }
 
-func TestNoArgument(t *testing.T) {
-	code, stdout, stderr := run(t)
+func TestCliNoArgument(t *testing.T) {
+	code, stdout, stderr := runCliForTesting(t)
 	assert.Equal(t, 1, code, "Exit code should be 1")
-	shouldPrintHelp(t, stdout, stderr)
+	shouldTestPrintHelp(t, stdout, stderr)
 	assert.Equal(t, "Error: flag file has not been specified\n", stderr)
 }
 
-func TestHelp(t *testing.T) {
-	code, stdout, stderr := run(t, "-h")
+func TestCliHelp(t *testing.T) {
+	code, stdout, stderr := runCliForTesting(t, "-h")
 	assert.Equal(t, 0, code, "Exit code should be 0")
-	shouldPrintHelp(t, stdout, stderr)
+	shouldTestPrintHelp(t, stdout, stderr)
 	assert.Equal(t, "", stderr)
 }
 
-func TestPackageJsonInRepo1(t *testing.T) {
-	code, stdout, stderr := run(t, "-f", "package.json", "testdata/repo1")
+func TestCliPackageJsonInRepo1(t *testing.T) {
+	code, stdout, stderr := runCliForTesting(t, "-f", "package.json", "testdata/repo1")
 	assert.Equal(t, 0, code, "Exit code should be 0")
 	assert.Equal(t, "", stderr)
 	assert.Equal(t,
@@ -62,15 +62,15 @@ testdata/repo1/outbound/china/mainland
 		stdout, "Should output exactly these")
 }
 
-func TestDepth0PackageJsonInRepo1(t *testing.T) {
-	code, stdout, stderr := run(t, "-f", "package.json", "-d", "0", "testdata/repo1")
+func TestCliDepth0PackageJsonInRepo1(t *testing.T) {
+	code, stdout, stderr := runCliForTesting(t, "-f", "package.json", "-d", "0", "testdata/repo1")
 	assert.Equal(t, 0, code, "Exit code should be 0")
 	assert.Equal(t, "", stderr)
 	assert.Equal(t, "", stdout, "Should output nothing")
 }
 
-func TestNoDefaultExcludesPackageJsonInRepo1(t *testing.T) {
-	code, stdout, stderr := run(t, "-f", "package.json", "--no-default-excludes", "testdata/repo1")
+func TestCliNoDefaultExcludesPackageJsonInRepo1(t *testing.T) {
+	code, stdout, stderr := runCliForTesting(t, "-f", "package.json", "--no-default-excludes", "testdata/repo1")
 	assert.Equal(t, 0, code, "Exit code should be 0")
 	assert.Equal(t, "", stderr)
 	assert.Equal(t,
