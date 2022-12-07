@@ -14,17 +14,32 @@ import (
 )
 
 func main() {
-	var optHelp = flag.Bool("help", false, "show help information")
-	var optDepth = flag.Int("depth", 5, "how deep to look into subdirectories, 0 means only look at root directory, -1 means no limit")
-	var optFlagFiles arrayFlag
+	setupFlags()                       // this function can't be called more than one time globally
+	doMain(println, printUsageAndExit) // this function is also called in every test case
+}
+
+const DEFAULT_DEPTH = 5
+
+var optHelp *bool
+var optDepth *int
+var optFlagFiles arrayFlag
+var optCheckFile *string
+var optCheckRegexp *string
+var optCheckInverse *bool
+var optExcludes arrayFlag
+var optNoDefaultExcludes *bool
+var optOnlySubdirectories *bool
+
+func setupFlags() {
+	optHelp = flag.Bool("help", false, "show help information")
+	optDepth = flag.Int("depth", DEFAULT_DEPTH, "how deep to look into subdirectories, 0 means only look at root directory, -1 means no limit")
 	flag.Var(&optFlagFiles, "flag-file", "name or `glob` of the flag file, this option can appear multiple times")
-	var optCheckFile = flag.String("check-file", "", "`name` of the additional file to check")
-	var optCheckRegexp = flag.String("check-regexp", ".*", "regular `expression` for testing the content of the check file")
-	var optCheckInverse = flag.Bool("check-inverse", false, "regard regular expression not matching as positive")
-	var optExcludes arrayFlag
+	optCheckFile = flag.String("check-file", "", "`name` of the additional file to check")
+	optCheckRegexp = flag.String("check-regexp", ".*", "regular `expression` for testing the content of the check file")
+	optCheckInverse = flag.Bool("check-inverse", false, "regard regular expression not matching as positive")
 	flag.Var(&optExcludes, "exclude", "`glob` of the directories to exclude, this option can appear multiple times")
-	var optNoDefaultExcludes = flag.Bool("no-default-excludes", false, "don't apply default excludes")
-	var optOnlySubdirectories = flag.Bool("subdirectories-only", false, "don't return root directory even if it meets conditions")
+	optNoDefaultExcludes = flag.Bool("no-default-excludes", false, "don't apply default excludes")
+	optOnlySubdirectories = flag.Bool("subdirectories-only", false, "don't return root directory even if it meets conditions")
 
 	getopt.Aliases(
 		"h", "help",
@@ -40,19 +55,39 @@ func main() {
 	flag.Usage = func() {
 		// do nothing, just to avoid getopt to show usage after warning/error info
 	}
+}
+
+func parseFlags() {
+	// It seems that getopt.Parse() does not reset flags in case it is called more than one time
+	*optHelp = false
+	*optDepth = DEFAULT_DEPTH
+	optFlagFiles = nil
+	*optCheckFile = ""
+	*optCheckRegexp = ""
+	*optCheckInverse = false
+	optExcludes = nil
+	*optNoDefaultExcludes = false
+	*optOnlySubdirectories = false
+
 	getopt.Parse()
+}
+
+func doMain(println func(text string), printUsageAndExit func(text string)) {
+	parseFlags()
 
 	if *optHelp {
 		printUsageAndExit("")
+		return
 	}
 
-	var optRootDir = "."
-	if len(flag.Args()) > 0 {
-		optRootDir = flag.Arg(0)
+	var optRootDir = getopt.CommandLine.Arg(0)
+	if optRootDir == "" {
+		optRootDir = "."
 	}
 
 	if len(optFlagFiles) == 0 {
 		printUsageAndExit("flag file has not been specified")
+		return
 	}
 
 	if !*optNoDefaultExcludes {
@@ -64,7 +99,7 @@ func main() {
 		)
 	}
 
-	var dirs = lsh.LsHaving(&lsh.Options{
+	var options = lsh.Options{
 		Depth:        *optDepth,
 		Excludes:     compileGlobs(optExcludes, filepath.Separator),
 		ExcludeRoot:  *optOnlySubdirectories,
@@ -72,9 +107,10 @@ func main() {
 		CheckFile:    *optCheckFile,
 		CheckRegexp:  regexp.MustCompile(*optCheckRegexp),
 		CheckInverse: *optCheckInverse,
-	}, optRootDir)
+	}
+	var dirs = lsh.LsHaving(&options, optRootDir)
 	if len(dirs) > 0 {
-		fmt.Println(strings.Join(dirs, "\n"))
+		println(strings.Join(dirs, "\n"))
 	}
 }
 
@@ -94,6 +130,10 @@ func (i *arrayFlag) String() string {
 func (i *arrayFlag) Set(value string) error {
 	*i = append(*i, value)
 	return nil
+}
+
+func println(text string) {
+	fmt.Println(text)
 }
 
 func printUsageAndExit(errorString string) {
