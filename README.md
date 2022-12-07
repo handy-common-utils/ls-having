@@ -36,7 +36,7 @@ To upgrade:
 sudo snap refresh ls-having
 ```
 
-**Manual download (works for Window)**
+**Manual download (works for Windows)**
 
 You can just download, unzip, and copy the executable to anywhere you like:
 https://github.com/handy-common-utils/ls-having/releases
