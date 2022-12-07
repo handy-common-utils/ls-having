@@ -2,6 +2,8 @@
 
 This is a tool that can list directories having specified flag files and optionally meeting other specified conditions.
 
+[![ls-having](https://snapcraft.io/ls-having/badge.svg)](https://snapcraft.io/ls-having)
+
 ## Install
 
 **MacOS (Intel or Apple silicon)**
