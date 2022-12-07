@@ -19,6 +19,7 @@ func main() {
 }
 
 const DEFAULT_DEPTH = 5
+const DEFAULT_CHECK_REGEXP = ".*"
 
 var optHelp *bool
 var optDepth *int
@@ -35,7 +36,7 @@ func setupFlags() {
 	optDepth = flag.Int("depth", DEFAULT_DEPTH, "how deep to look into subdirectories, 0 means only look at root directory, -1 means no limit")
 	flag.Var(&optFlagFiles, "flag-file", "name or `glob` of the flag file, this option can appear multiple times")
 	optCheckFile = flag.String("check-file", "", "`name` of the additional file to check")
-	optCheckRegexp = flag.String("check-regexp", ".*", "regular `expression` for testing the content of the check file")
+	optCheckRegexp = flag.String("check-regexp", DEFAULT_CHECK_REGEXP, "regular `expression` for testing the content of the check file")
 	optCheckInverse = flag.Bool("check-inverse", false, "regard regular expression not matching as positive")
 	flag.Var(&optExcludes, "exclude", "`glob` of the directories to exclude, this option can appear multiple times")
 	optNoDefaultExcludes = flag.Bool("no-default-excludes", false, "don't apply default excludes")
@@ -63,7 +64,7 @@ func parseFlags() {
 	*optDepth = DEFAULT_DEPTH
 	optFlagFiles = nil
 	*optCheckFile = ""
-	*optCheckRegexp = ""
+	*optCheckRegexp = DEFAULT_CHECK_REGEXP
 	*optCheckInverse = false
 	optExcludes = nil
 	*optNoDefaultExcludes = false
