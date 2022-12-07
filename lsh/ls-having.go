@@ -39,7 +39,7 @@ type dirEntryEx struct {
 func readEntries(dir string, depth int) *[]dirEntryEx {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err) // panic if can't list the content in the directory
 	}
 	entriesEx := make([]dirEntryEx, 0, len(entries))
 	for _, entry := range entries {
@@ -49,9 +49,24 @@ func readEntries(dir string, depth int) *[]dirEntryEx {
 }
 
 func doLsHaving(options *Options, found *[]string, dir string, depth int, entriesInDir *[]dirEntryEx) {
-	if entriesInDir == nil {
-		entriesInDir = readEntries(dir, depth)
+	if entriesInDir == nil { // this must be the root dir
+		if depth != 0 {
+			log.Fatal("Internal error: entriesInDir == nil but depth != 0")
+		}
+		rootDirInfo, err := os.Stat(dir)
+		if err != nil {
+			log.Fatal(err) // panic if can't read the root directory
+		}
+		rootDirEntryEx := dirEntryEx{dir, 0, fs.FileInfoToDirEntry(rootDirInfo)}
+		entriesInDir = readEntries(dir, 0)
+
+		if shouldCheck(options, &rootDirEntryEx) {
+			if match(options, &rootDirEntryEx, entriesInDir) {
+				*found = append(*found, rootDirEntryEx.Path)
+			}
+		}
 	}
+
 	for _, entry := range *entriesInDir {
 		if shouldCheck(options, &entry) {
 			entriesInSubDir := readEntries(entry.Path, entry.Depth)

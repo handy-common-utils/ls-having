@@ -54,7 +54,8 @@ func TestCliPackageJsonInRepo1(t *testing.T) {
 	assert.Equal(t, 0, code, "Exit code should be 0")
 	assert.Equal(t, "", stderr)
 	assert.Equal(t,
-		`testdata/repo1/inbound
+		`testdata/repo1
+testdata/repo1/inbound
 testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland
@@ -66,7 +67,7 @@ func TestCliDepth0PackageJsonInRepo1(t *testing.T) {
 	code, stdout, stderr := runCliForTesting(t, "-f", "package.json", "-d", "0", "testdata/repo1")
 	assert.Equal(t, 0, code, "Exit code should be 0")
 	assert.Equal(t, "", stderr)
-	assert.Equal(t, "", stdout, "Should output nothing")
+	assert.Equal(t, "testdata/repo1\n", stdout, "Should output the root directory")
 }
 
 func TestCliNoDefaultExcludesPackageJsonInRepo1(t *testing.T) {
@@ -74,7 +75,8 @@ func TestCliNoDefaultExcludesPackageJsonInRepo1(t *testing.T) {
 	assert.Equal(t, 0, code, "Exit code should be 0")
 	assert.Equal(t, "", stderr)
 	assert.Equal(t,
-		`testdata/repo1/inbound
+		`testdata/repo1
+testdata/repo1/inbound
 testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland

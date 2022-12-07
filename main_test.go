@@ -57,17 +57,19 @@ var validArgumentsAndExpectedOutputs = []struct {
 }{
 	{
 		"-f package.json testdata/repo1",
-		`testdata/repo1/inbound
+		`testdata/repo1
+testdata/repo1/inbound
 testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland
 `,
 	}, {
 		"-f package.json -d 0 testdata/repo1",
-		"",
+		"testdata/repo1\n",
 	}, {
 		"-f package.json --no-default-excludes testdata/repo1",
-		`testdata/repo1/inbound
+		`testdata/repo1
+testdata/repo1/inbound
 testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland
@@ -78,11 +80,12 @@ testdata/repo1/outbound/china/mainland/node_modules/package2
 		"-f package.json --depth 0 testdata/repo1/inbound",
 		"testdata/repo1/inbound\n",
 	}, {
-		"-f package.json --depth 0 -subdirectories-only testdata/repo1/inbound",
+		"-f package.json --depth 0 --subdirectories-only --no-default-excludes testdata/repo1/inbound",
 		"",
 	}, {
-		"-f package.json -subdirectories-only testdata/repo1/outbound/china/mainland",
+		"-f package.json --subdirectories-only --no-default-excludes testdata/repo1/outbound/china/mainland",
 		`testdata/repo1/outbound/china/mainland/node_modules/package1
+testdata/repo1/outbound/china/mainland/node_modules/package1/node_modules/package1-1
 testdata/repo1/outbound/china/mainland/node_modules/package2
 `,
 	}, {
@@ -95,6 +98,34 @@ testdata/repo1/outbound/china/sars
 	}, {
 		"-f serverless.ts testdata/repo1",
 		"testdata/repo1/outbound/china/sars\n",
+	}, {
+		"-f serverless.* -c build.gradle testdata/repo1",
+		`testdata/repo1/outbound/australia
+testdata/repo1/outbound/china/sars
+`,
+	}, {
+		"-f package.* -c package.json testdata/repo1",
+		`testdata/repo1
+testdata/repo1/inbound
+testdata/repo1/outbound/New Zealand
+testdata/repo1/outbound/china
+testdata/repo1/outbound/china/mainland
+`,
+	}, {
+		"-f package.* -c package.yml testdata/repo1",
+		`testdata/repo1/api
+`,
+	}, {
+		`-f package.* -c package.json -e "@types/mocha": testdata/repo1`,
+		`testdata/repo1/inbound
+`,
+	}, {
+		`-f package.* -c package.json -e "@types/mocha": -i testdata/repo1`,
+		`testdata/repo1
+testdata/repo1/outbound/New Zealand
+testdata/repo1/outbound/china
+testdata/repo1/outbound/china/mainland
+`,
 	},
 }
 
