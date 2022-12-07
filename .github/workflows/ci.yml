@@ -1,7 +1,8 @@
-name: ci
+name: CI
 
 on:
-  push: [push, pull_request]
+  push:
+    branches: [ master, main, develop, feature/**, chore/**, bugfix/**, hotfix/** ]
 
 jobs:
   test:
