@@ -74,6 +74,27 @@ testdata/repo1/outbound/china/mainland
 testdata/repo1/outbound/china/mainland/node_modules/package1
 testdata/repo1/outbound/china/mainland/node_modules/package2
 `,
+	}, {
+		"-f package.json --depth 0 testdata/repo1/inbound",
+		"testdata/repo1/inbound\n",
+	}, {
+		"-f package.json --depth 0 -subdirectories-only testdata/repo1/inbound",
+		"",
+	}, {
+		"-f package.json -subdirectories-only testdata/repo1/outbound/china/mainland",
+		`testdata/repo1/outbound/china/mainland/node_modules/package1
+testdata/repo1/outbound/china/mainland/node_modules/package2
+`,
+	}, {
+		"-f serverless.* testdata/repo1",
+		`testdata/repo1/inbound
+testdata/repo1/outbound/New Zealand
+testdata/repo1/outbound/australia
+testdata/repo1/outbound/china/sars
+`,
+	}, {
+		"-f serverless.ts testdata/repo1",
+		"testdata/repo1/outbound/china/sars\n",
 	},
 }
 
