@@ -96,6 +96,8 @@ func doMain(println func(text string), printUsageAndExit func(text string)) {
 			filepath.Join("**", ".git"),
 			"node_modules",
 			filepath.Join("**", "node_modules"),
+			"testdata",
+			filepath.Join("**", "testdata"),
 		)
 	}
 
