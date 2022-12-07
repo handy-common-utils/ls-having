@@ -62,7 +62,7 @@ jobs:
         snap: ${{ steps.build.outputs.snap }}
         release: stable
   publish-go-module:
-    needs: [goreleaser snapcraft]
+    needs: [goreleaser, snapcraft]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
