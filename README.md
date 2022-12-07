@@ -3,6 +3,8 @@
 This is a tool that can list directories having specified flag files and optionally meeting other specified conditions.
 
 [![ls-having](https://snapcraft.io/ls-having/badge.svg)](https://snapcraft.io/ls-having)
+[![codecov](https://codecov.io/gh/handy-common-utils/ls-having/branch/master/graph/badge.svg?token=CJLY2DXUAU)](https://codecov.io/gh/handy-common-utils/ls-having)
+[![Go Reference](https://pkg.go.dev/badge/github.com/handy-common-utils/ls-having.svg)](https://pkg.go.dev/github.com/handy-common-utils/ls-having)
 
 ## Install
 
