@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"regexp"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -50,28 +51,22 @@ func TestDoMainHelp(t *testing.T) {
 	assert.Equal(t, "", output)
 }
 
-func TestDoMainPackageJsonInRepo1(t *testing.T) {
-	output, hasError, _ := runDoMainForTesting("-f", "package.json", "testdata/repo1")
-	assert.False(t, hasError, "There should be no error")
-	assert.Equal(t,
+var validArgumentsAndExpectedOutputs = []struct {
+	arguments string
+	output    string
+}{
+	{
+		"-f package.json testdata/repo1",
 		`testdata/repo1/inbound
 testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland
 `,
-		output, "Should output exactly these")
-}
-
-func TestDoMainDepth0PackageJsonInRepo1(t *testing.T) {
-	output, hasError, _ := runDoMainForTesting("-f", "package.json", "-d", "0", "testdata/repo1")
-	assert.False(t, hasError, "There should be no error")
-	assert.Equal(t, "", output, "Should output nothing")
-}
-
-func TestDoMainNoDefaultExcludesPackageJsonInRepo1(t *testing.T) {
-	output, hasError, _ := runDoMainForTesting("-f", "package.json", "--no-default-excludes", "testdata/repo1")
-	assert.False(t, hasError, "There should be no error")
-	assert.Equal(t,
+	}, {
+		"-f package.json -d 0 testdata/repo1",
+		"",
+	}, {
+		"-f package.json --no-default-excludes testdata/repo1",
 		`testdata/repo1/inbound
 testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
@@ -79,5 +74,17 @@ testdata/repo1/outbound/china/mainland
 testdata/repo1/outbound/china/mainland/node_modules/package1
 testdata/repo1/outbound/china/mainland/node_modules/package2
 `,
-		output, "Should output exactly these")
+	},
+}
+
+func TestDoMainWithValidArguments(t *testing.T) {
+	spaces := regexp.MustCompile(" +")
+	for _, vaaeo := range validArgumentsAndExpectedOutputs {
+		args := spaces.Split(vaaeo.arguments, -1)
+		t.Run(vaaeo.arguments, func(t *testing.T) {
+			output, hasError, _ := runDoMainForTesting(args...)
+			assert.False(t, hasError, "There should be no error")
+			assert.Equal(t, vaaeo.output, output, "Should output exactly these")
+		})
+	}
 }
