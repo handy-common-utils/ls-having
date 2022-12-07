@@ -137,3 +137,30 @@ func main() {
 ```
 
 See [main.go](main.go) for example.
+
+## Contributing
+
+**Run locally**
+
+```
+go run . <command line arguments>
+```
+
+**Test**
+
+```
+go test
+```
+
+**Release**
+
+1. Push to `master` branch
+2. Tag with version number without prefix `v`.
+   For example, use tag `1.2.34`.
+3. Push the tag
+4. GitHub workflow will automatically release to
+   [snapcraft](https://snapcraft.io/ls-having),
+   Homebrew,
+   and [pkg.go.dev](https://pkg.go.dev/github.com/handy-common-utils/ls-having).
+5. The workflow also automatically creates a tag with prefixed version number.
+   For example, `v1.2.34`
