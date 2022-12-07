@@ -61,12 +61,20 @@ jobs:
       with:
         snap: ${{ steps.build.outputs.snap }}
         release: stable
-  notify-pkg.go.dev:
+  publish-go-module:
     needs: [goreleaser snapcraft]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: git fetch --force --tags
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.19.3'
+          cache: true
       - run: |
           NEW_TAG="v$(git describe HEAD --tags --abbrev=0)"
           git tag $NEW_TAG
           git push origin $NEW_TAG
-          curl "https://proxy.golang.org/github.com/handy-common-utils/ls-having/@v/$NEW_TAG.info"
+          GOPROXY=proxy.golang.org go list -m "github.com/handy-common-utils/ls-having@$NEW_TAG"
