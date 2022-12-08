@@ -24,7 +24,8 @@ brew upgrade handy-common-utils/tap/ls-having
 
 **Linux (all kinds of)**
 
-`ls-having` can be installed through [snap](https://snapcraft.io/docs/installing-snapd):
+`ls-having` is [listed in snap store] (https://snapcraft.io/ls-having)
+and can be installed through [snap](https://snapcraft.io/docs/installing-snapd):
 
 ```sh
 sudo snap install ls-having
