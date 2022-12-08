@@ -204,7 +204,7 @@ func main() {
 }
 ```
 
-See [main.go](https://github.com/handy-common-utils/ls-having/blob/master/main.go#:~:text=var%20dirs%20%3D-,lsh.LsHaving,-(%26options) for example.
+See [main.go](https://github.com/handy-common-utils/ls-having/blob/master/main.go#:~:text=lsh.LsHaving) for example.
 
 ## Contributing
 
