@@ -19,7 +19,7 @@ jobs:
           go-version: '>=1.19.3'
           cache: true
       - run: go build
-      - run: go test -cover -v
+      - run: go test
   goreleaser:
     needs: test
     runs-on: ubuntu-latest
