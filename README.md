@@ -56,6 +56,7 @@ Options:
   -f, --flag-file glob           name or glob of the flag file, this option can appear multiple times
   -h, --help                     show help information
   -n, --no-default-excludes      don't apply default excludes
+  -0, --print0                   separate paths in the output with null characters (instead of newline characters)
   -s, --subdirectories-only      don't return root directory even if it meets conditions
 References:
   Glob syntax: https://github.com/gobwas/glob#example
@@ -172,6 +173,13 @@ having `build.gradle*` and print out their details:
 
 ```sh
 ls-having -f 'build.gradle*' /tmp/sample/repo | xargs -I {} bash -c 'cd {}; pwd; ls -l build.gradle*'
+```
+
+Use null character (instead of newline character) as separator in the output,
+so that `-0` option of xargs can be used:
+
+```sh
+ls-having --print0 -f package.json testdata/repo1 | xargs -0 -I {} bash -c 'cd "{}"; pwd'
 ```
 
 ## Usage - as a Go package

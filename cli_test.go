@@ -63,6 +63,20 @@ testdata/repo1/outbound/china/mainland
 		stdout, "Should output exactly these")
 }
 
+func TestCliPrint0PackageJsonInRepo1(t *testing.T) {
+	code, stdout, stderr := runCliForTesting(t, "-0", "-f", "package.json", "testdata/repo1")
+	assert.Equal(t, 0, code, "Exit code should be 0")
+	assert.Equal(t, "", stderr)
+	assert.Equal(t,
+		strings.ReplaceAll(`testdata/repo1
+testdata/repo1/inbound
+testdata/repo1/outbound/New Zealand
+testdata/repo1/outbound/china
+testdata/repo1/outbound/china/mainland
+`, "\n", string([]byte{0})),
+		stdout, "Should output exactly these")
+}
+
 func TestCliDepth0PackageJsonInRepo1(t *testing.T) {
 	code, stdout, stderr := runCliForTesting(t, "-f", "package.json", "-d", "0", "testdata/repo1")
 	assert.Equal(t, 0, code, "Exit code should be 0")

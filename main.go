@@ -14,8 +14,8 @@ import (
 )
 
 func main() {
-	setupFlags()                       // this function can't be called more than one time globally
-	doMain(println, printUsageAndExit) // this function is also called in every test case
+	setupFlags()                     // this function can't be called more than one time globally
+	doMain(print, printUsageAndExit) // this function is also called in every test case
 }
 
 const DEFAULT_DEPTH = 5
@@ -30,6 +30,7 @@ var optCheckInverse *bool
 var optExcludes arrayFlag
 var optNoDefaultExcludes *bool
 var optOnlySubdirectories *bool
+var optPrint0 *bool
 
 func setupFlags() {
 	optHelp = flag.Bool("help", false, "show help information")
@@ -41,6 +42,7 @@ func setupFlags() {
 	flag.Var(&optExcludes, "exclude", "`glob` of the directories to exclude, this option can appear multiple times")
 	optNoDefaultExcludes = flag.Bool("no-default-excludes", false, "don't apply default excludes")
 	optOnlySubdirectories = flag.Bool("subdirectories-only", false, "don't return root directory even if it meets conditions")
+	optPrint0 = flag.Bool("print0", false, "separate paths in the output with null characters (instead of newline characters)")
 
 	getopt.Aliases(
 		"h", "help",
@@ -52,6 +54,7 @@ func setupFlags() {
 		"x", "exclude",
 		"n", "no-default-excludes",
 		"s", "subdirectories-only",
+		"0", "print0",
 	)
 	flag.Usage = func() {
 		// do nothing, just to avoid getopt to show usage after warning/error info
@@ -69,11 +72,12 @@ func parseFlags() {
 	optExcludes = nil
 	*optNoDefaultExcludes = false
 	*optOnlySubdirectories = false
+	*optPrint0 = false
 
 	getopt.Parse()
 }
 
-func doMain(println func(text string), printUsageAndExit func(text string)) {
+func doMain(print func(text string), printUsageAndExit func(text string)) {
 	parseFlags()
 
 	if *optHelp {
@@ -113,7 +117,12 @@ func doMain(println func(text string), printUsageAndExit func(text string)) {
 	}
 	var dirs = lsh.LsHaving(&options, optRootDir)
 	if len(dirs) > 0 {
-		println(strings.Join(dirs, "\n"))
+		separator := "\n"
+		if *optPrint0 {
+			separator = string([]byte{0})
+		}
+		print(strings.Join(dirs, separator))
+		print(separator)
 	}
 }
 
@@ -135,8 +144,8 @@ func (i *arrayFlag) Set(value string) error {
 	return nil
 }
 
-func println(text string) {
-	fmt.Println(text)
+func print(text string) {
+	fmt.Print(text)
 }
 
 func printUsageAndExit(errorString string) {
