@@ -49,6 +49,8 @@ https://github.com/handy-common-utils/ls-having/releases
 
 ### Help
 
+`ls-having -h` prints the help screen:
+
 ```
 Usage: ls-having -f name-or-glob [options] [root-dir]
 Options:
