@@ -106,10 +106,8 @@ Find all directories in `./` having `package.json` file,
 and run `npm audit fix` in them one by one:
 
 ```sh
-ls-having -f package.json | xargs -I {} npm audit fix
+ls-having -f package.json | xargs -I {} bash -c 'cd "{}"; npm audit fix'
 ```
-
-The `-I {}` flag above has very similar effect as `-L 1` flag.
 
 Find all directories in `./` having `package.json` file
 and the `package.json` file does not contain `"volta":`:
