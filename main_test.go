@@ -25,7 +25,7 @@ func runDoMainForTesting(args ...string) (output string, hasError bool, error st
 
 	// doMain()
 	doMain(func(text string) {
-		output += text + "\n"
+		output += text
 	}, func(text string) {
 		if len(text) > 0 {
 			hasError = true
