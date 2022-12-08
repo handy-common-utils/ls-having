@@ -204,7 +204,7 @@ func main() {
 }
 ```
 
-See [main.go](https://github.com/handy-common-utils/ls-having/blob/master/main.go#:~:text=lsh.LsHaving) for example.
+See [main.go](https://github.com/handy-common-utils/ls-having/blob/master/main.go#:~:text=lsh.LsHaving) for code example.
 
 ## Contributing
 
