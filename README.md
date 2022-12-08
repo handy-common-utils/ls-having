@@ -63,6 +63,15 @@ References:
   Home page: https://github.com/handy-common-utils/ls-having
 ```
 
+### Flag file and root directory
+
+Flag file must be specified, otherwise `ls-having` would print out an error message and exit.
+
+The root directory can be omitted from the command line arguments.
+In such case, current directory (`./`) would be used as the root directory.
+
+If the root directory is specified, it must be the last argument.
+
 ### Default excludes
 
 By default, these directories will not be looked into:
@@ -71,18 +80,28 @@ By default, these directories will not be looked into:
 - `node_modules` and `**/node_modules`
 - `testdata` and `**/testdata`
 
-Flag `--no-default-excludes` can be used to disable this behaviour.
+Option `--no-default-excludes` or `-n` can be used to disable this behaviour.
 
-Flag `--exclude` can be used to add more globs to the list.
-This flag can appear multiple times.
+Option `--exclude` or `-x` can be used to add more globs to the list.
+This Option can appear multiple times.
 
 Examples:
 
 - `ls-having -f package.json --no-default-excludes --exclude node_modules --exclude '**/node_modules' --exclude '**/sample'`.
 
+### Default maximum depth
+
+By default `ls-having` does not go beyond 5 level depth into subdirectories.
+The root directory is considered as at level 0, its direct subdirectories are
+considered as at level 1, so on and so forth.
+
+Option `--depth` or `-d` can be used to specify the maximum depth.
+If a negative number is specified, `ls-having` will keep digging down
+untill there is no more subdirectory.
+
 ### Examples
 
-Find all subdirectories having `package.json` file,
+Find all directories in `./` having `package.json` file,
 and run `npm audit fix` in them one by one:
 
 ```sh
@@ -91,6 +110,20 @@ ls-having -f package.json | xargs -I {} npm audit fix
 
 The `-I {}` flag above has very similar effect as `-L 1` flag.
 
+Find all directories in `./` having `package.json` file
+and the `package.json` file does not contain `"volta":`:
+
+```sh
+ls-having -f package.json -c package.json -i -e '"volta":'
+```
+
+Find all directories in `./` having `package.json` file
+and the `package.json` file has `mocha` specified as a dependency,
+then for each of those directories reinstall latest version of `mocha` as dev-dependency:
+
+```sh
+ls-having -f package.json -c package.json -e '"dependencies":\s*{[^{}]*"mocha":' | xargs -I {} bash -c 'cd {}; npm i -D mocha@latest'
+```
 
 Find all directories in `./` having `package.json` file,
 go as deep as 8 levels, and don't apply default excludes
@@ -119,7 +152,7 @@ and the `package.json` file must contain text `"@types/mocha":`:
 ls-having -f 'package.json' -c package.json -e '"@types/mocha":'
 ```
 
-Find all subdirectories (the current directory `./` is excluded)
+Find all subdirectories (but exclude the current directory `./`)
 having `package.json`,
 and also having `serverless.yml` file contain text `datadog`:
 
@@ -127,11 +160,18 @@ and also having `serverless.yml` file contain text `datadog`:
 ls-having -f 'package.json' -c serverless.yml -e 'datadog' -s
 ```
 
-Find all subdirectories under `/tmp/sample/repo` (the root directory `/tmp/sample/repo` is excluded)
-having `build.gradle` or `build.gradle.*` or `mvn.xml`:
+Find all subdirectories under `/tmp/sample/repo` (but exclude the root directory `/tmp/sample/repo`)
+having `build.gradle*` or `mvn.xml`:
 
 ```sh
-ls-having -f 'build.gradle' -f 'build.gradle.*' -f 'mvn.xml' -s /tmp/sample/repo
+ls-having -f 'build.gradle*' -f 'mvn.xml' -s /tmp/sample/repo
+```
+
+Find all directories in `/tmp/sample/repo`
+having `build.gradle*` and print out their details:
+
+```sh
+ls-having -f 'build.gradle*' /tmp/sample/repo | xargs -I {} bash -c 'cd {}; pwd; ls -l build.gradle*'
 ```
 
 ## Usage - as a Go package
