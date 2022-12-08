@@ -82,6 +82,16 @@ Examples:
 
 ### Examples
 
+Find all subdirectories having `package.json` file,
+and run `npm audit fix` in them one by one:
+
+```sh
+ls-having -f package.json | xargs -I {} npm audit fix
+```
+
+The `-I {}` flag above has very similar effect as `-L 1` flag.
+
+
 Find all directories in `./` having `package.json` file,
 go as deep as 8 levels, and don't apply default excludes
 (such like `.git` and `node_modules`):
@@ -98,14 +108,18 @@ and also having `package.json`:
 ls-having  -f 'serverless.*' -c package.json testdata/repo1
 ```
 
-Find all directories in `./` having `package.json`,
-and the `package.json` file must contain text `mocha`:
+Please note that if you use `*` in the argument as part of a
+glob or regular expression, you need to quote the argument with single quotes,
+otherwise the shell could interpret and translate it before it reaches the program.
+
+Find all subdirectories having `package.json`,
+and the `package.json` file must contain text `"@types/mocha":`:
 
 ```sh
-ls-having -f 'package.json' -c package.json -e 'mocha'
+ls-having -f 'package.json' -c package.json -e '"@types/mocha":'
 ```
 
-Find all subdirectories under `./` (the root directory `./` is excluded)
+Find all subdirectories (the current directory `./` is excluded)
 having `package.json`,
 and also having `serverless.yml` file contain text `datadog`:
 
@@ -113,14 +127,16 @@ and also having `serverless.yml` file contain text `datadog`:
 ls-having -f 'package.json' -c serverless.yml -e 'datadog' -s
 ```
 
-Find all subdirectories under `/tmp/sample/repo` (the root directory `./` is excluded)
-having `build.gradle*` or `mvn.xml`:
+Find all subdirectories under `/tmp/sample/repo` (the root directory `/tmp/sample/repo` is excluded)
+having `build.gradle` or `build.gradle.*` or `mvn.xml`:
 
 ```sh
-ls-having -f 'build.gradle*' -f 'mvn.xml' -s /tmp/sample/repo
+ls-having -f 'build.gradle' -f 'build.gradle.*' -f 'mvn.xml' -s /tmp/sample/repo
 ```
 
 ## Usage - as a Go package
+
+Package summary page: https://pkg.go.dev/github.com/handy-common-utils/ls-having/lsh
 
 ```go
 import (
@@ -136,7 +152,7 @@ func main() {
 }
 ```
 
-See [main.go](main.go) for example.
+See [main.go](https://github.com/handy-common-utils/ls-having/blob/master/main.go#:~:text=var%20dirs%20%3D-,lsh.LsHaving,-(%26options) for example.
 
 ## Contributing
 
