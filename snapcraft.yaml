@@ -5,6 +5,8 @@ description: |
   It is handy for developers maintaining mono repos that have multiple projects in each repo,
   and also suitable for CI/CD use cases.
   It is quick and small. Pre-built binaries are available for Linux, MacOS, and Windows.
+
+  Home page: https://github.com/handy-common-utils/ls-having
 version: git
 grade: stable
 base: core20
