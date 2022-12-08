@@ -126,6 +126,38 @@ testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland
 `,
+	}, {
+		`-f package.* -c package.json -e "volta": testdata/repo1`,
+		`testdata/repo1/inbound
+`,
+	}, {
+		`-f package.* -c package.json -e "dependencies":\s*{[^{}]*"volta": testdata/repo1`,
+		"",
+	}, {
+		`-f package.* -c package.json -e "dependencies":\s*{[^{}]*"mocha": testdata/repo1`,
+		`testdata/repo1/inbound
+`,
+	}, {
+		`-f build.gradle* testdata/repo1`,
+		`testdata/repo1/outbound/australia
+testdata/repo1/outbound/china/sars
+testdata/repo1/outbound/usa
+`,
+	}, {
+		`-f build.gradle testdata/repo1`,
+		`testdata/repo1/outbound/australia
+testdata/repo1/outbound/china/sars
+`,
+	}, {
+		`-f build.gradle -f mvn.* testdata/repo1`,
+		`testdata/repo1/outbound/australia
+testdata/repo1/outbound/china/sars
+testdata/repo1/storage
+`,
+	}, {
+		`-f build.gradle -f mvn.* -x **/australia -x **/storage testdata/repo1`,
+		`testdata/repo1/outbound/china/sars
+`,
 	},
 }
 
