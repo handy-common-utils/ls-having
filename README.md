@@ -9,7 +9,7 @@ It is quick and small. Pre-built binaries are available for Linux, MacOS, and Wi
 [![codecov](https://codecov.io/gh/handy-common-utils/ls-having/branch/master/graph/badge.svg?token=CJLY2DXUAU)](https://codecov.io/gh/handy-common-utils/ls-having)
 [![Go Reference](https://pkg.go.dev/badge/github.com/handy-common-utils/ls-having.svg)](https://pkg.go.dev/github.com/handy-common-utils/ls-having/lsh)
 
-## Install
+## Installation
 
 **MacOS (Intel or Apple silicon)**
 
