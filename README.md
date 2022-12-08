@@ -1,6 +1,9 @@
 # ls-having
 
 This is a tool that can list directories having specified flag files and optionally meeting other specified conditions.
+It is handy for developers maintaining mono repos that have multiple projects in each repo,
+and also suitable for CI/CD use cases.
+It is quick and small. Pre-built binaries are available for Linux, MacOS, and Windows.
 
 [![ls-having](https://snapcraft.io/ls-having/badge.svg)](https://snapcraft.io/ls-having)
 [![codecov](https://codecov.io/gh/handy-common-utils/ls-having/branch/master/graph/badge.svg?token=CJLY2DXUAU)](https://codecov.io/gh/handy-common-utils/ls-having)
