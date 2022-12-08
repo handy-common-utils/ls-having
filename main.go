@@ -1,3 +1,7 @@
+// This package ("main" package) is not supposed to be imported by another program.
+// To use the functionality of ls-having, the "lsh" package
+// ("github.com/handy-common-utils/ls-having/lsh" package) can be imported.
+// See the documentation of "lsh" package for details.
 package main
 
 import (

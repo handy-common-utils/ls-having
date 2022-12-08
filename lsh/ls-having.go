@@ -1,3 +1,6 @@
+// This package exposes the functionality of ls-having.
+// For documentation of ls-having,
+// see its home page: https://github.com/handy-common-utils/ls-having
 package lsh
 
 import (
@@ -11,19 +14,38 @@ import (
 	"github.com/gobwas/glob"
 )
 
+// For more details regarding these options,
+// see the home page of ls-having: https://github.com/handy-common-utils/ls-having
 type Options struct {
-	Depth        int
-	Excludes     []glob.Glob
-	ExcludeRoot  bool
-	FlagFiles    []glob.Glob
-	CheckFile    string // "" means it is not used
-	CheckRegexp  *regexp.Regexp
+	// Maximum depth to look into subdirectories.
+	// The root directory has depth 0.
+	// Negative value in this field means no limitation on depth.
+	Depth int
+
+	// Directories matching any of these patterns won't be looked into
+	Excludes []glob.Glob
+
+	// Exclude root directory in the result to be returned
+	ExcludeRoot bool
+
+	// Only directories having at least one file matching any of these patterns could be returned
+	FlagFiles []glob.Glob
+
+	// Additional file that its content would be checked. Use empty string to skip this checking.
+	CheckFile string
+
+	// Regular expression used for checking the content of CheckFile
+	CheckRegexp *regexp.Regexp
+
+	// Regard not matching as positive when using CheckRegexp to check the content of CheckFile
 	CheckInverse bool
 }
 
-func LsHaving(options *Options, dir string) []string {
+// Find directories matching conditions.
+// The array of paths returned is sorted in ascend order.
+func LsHaving(options *Options, rootDir string) []string {
 	var found []string = make([]string, 0, 100)
-	doLsHaving(options, &found, dir, 0, nil) // root dir has depth 0
+	doLsHaving(options, &found, rootDir, 0, nil) // root dir has depth 0
 	sort.Strings(found)
 	return found
 }
