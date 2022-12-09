@@ -41,13 +41,17 @@ description: |
   Find all directories in `./` having `package.json` file
   and the `package.json` file does not contain `"volta":`:
 
-  `ls-having -f package.json -c package.json -i -e '"volta":'`
+  `ls-having -c package.json -i -e '"volta":'`
 
-  Find all directories in `./` having `package.json` file
-  and the `package.json` file has `mocha` specified as a dependency,
+  Find all directories in `./` having `cdk.json` file
+  and the `package.json` file in the directory has `mocha` specified as a dependency,
   then for each of those directories reinstall latest version of `mocha` as dev-dependency:
 
-  `ls-having -f package.json -c package.json -e '"dependencies":\s*{[^{}]*"mocha":' | xargs -I {} bash -c 'cd {}; npm i -D mocha@latest'` 
+  `ls-having -f cdk.json -c package.json -e '"dependencies":\s*{[^{}]*"mocha":' | xargs -I {} bash -c 'cd {}; npm i -D mocha@latest'`
+
+  Find all directories in `~/myrepo1` having `build.gradle` file and a sibling directory `australia`:
+
+  `ls-having -f build.gradle -c ../australia ~/myrepo1`
 version: git
 grade: stable
 base: core20
