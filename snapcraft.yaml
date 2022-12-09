@@ -8,6 +8,9 @@ description: |
 
   **Home page**: https://github.com/handy-common-utils/ls-having
 
+  To install for MacOS, try `brew install handy-common-utils/tap/ls-having`.
+  To download executables (including ls-having.exe) directly, visit: https://github.com/handy-common-utils/ls-having/releases
+
   **Usage**
 
       Usage: ls-having -f name-or-glob [options] [root-dir]
@@ -44,7 +47,7 @@ description: |
   and the `package.json` file has `mocha` specified as a dependency,
   then for each of those directories reinstall latest version of `mocha` as dev-dependency:
 
-  `ls-having -f package.json -c package.json -e '"dependencies":\s*{[^{}]*"mocha":' | xargs -I {} bash -c 'cd {}; npm i -D mocha@latest'`
+  `ls-having -f package.json -c package.json -e '"dependencies":\s*{[^{}]*"mocha":' | xargs -I {} bash -c 'cd {}; npm i -D mocha@latest'` 
 version: git
 grade: stable
 base: core20
