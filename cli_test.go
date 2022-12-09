@@ -39,7 +39,7 @@ func TestCliNoArgument(t *testing.T) {
 	code, stdout, stderr := runCliForTesting(t)
 	assert.Equal(t, 1, code, "Exit code should be 1")
 	shouldTestPrintHelp(t, stdout, stderr)
-	assert.Equal(t, "Error: flag file has not been specified\n", stderr)
+	assert.Equal(t, "Error: flag file or check file must be specified\n", stderr)
 }
 
 func TestCliErrorPanicNonExistingDir(t *testing.T) {

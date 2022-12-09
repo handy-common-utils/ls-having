@@ -73,7 +73,14 @@ References:
 
 ### Flag file and root directory
 
-Flag file must be specified, otherwise `ls-having` would print out an error message and exit.
+Flag file or check file must be specified,
+otherwise `ls-having` would print out an error message and exit.
+
+One or several flag file globs can be specified.
+In such case check file and check file expression are optional.
+
+If a check file is specified, flag file can be omitted.
+In such case the check file is also used as the flag file.
 
 The root directory can be omitted from the command line arguments.
 In such case, current directory (`./`) would be used as the root directory.
@@ -133,7 +140,7 @@ Find all directories in `./` having `package.json` file
 and the `package.json` file does not contain `"volta":`:
 
 ```sh
-ls-having -f package.json -c package.json -i -e '"volta":'
+ls-having -c package.json -i -e '"volta":'
 ```
 
 Find all directories in `./` having `package.json` file
@@ -141,7 +148,7 @@ and the `package.json` file has `mocha` specified as a dependency,
 then for each of those directories reinstall latest version of `mocha` as dev-dependency:
 
 ```sh
-ls-having -f package.json -c package.json -e '"dependencies":\s*{[^{}]*"mocha":' | xargs -I {} bash -c 'cd {}; npm i -D mocha@latest'
+ls-having -c package.json -e '"dependencies":\s*{[^{}]*"mocha":' | xargs -I {} bash -c 'cd {}; npm i -D mocha@latest'
 ```
 
 Find all directories in `./` having `package.json` file,
@@ -164,11 +171,11 @@ Please note that if you use `*` in the argument as part of a
 glob or regular expression, you need to quote the argument with single quotes,
 otherwise the shell could interpret and translate it before it reaches the program.
 
-Find all subdirectories having `package.json`,
-and the `package.json` file must contain text `"@types/mocha":`:
+Find all subdirectories having `cdk.json`,
+and also a `package.json` file containing text `"@types/mocha":`:
 
 ```sh
-ls-having -f 'package.json' -c package.json -e '"@types/mocha":'
+ls-having -f cdk.json -c package.json -e '"@types/mocha":'
 ```
 
 Find all subdirectories (but exclude the current directory `./`)
@@ -176,7 +183,7 @@ having `package.json`,
 and also having `serverless.yml` file contain text `datadog`:
 
 ```sh
-ls-having -f 'package.json' -c serverless.yml -e 'datadog' -s
+ls-having -f package.json -c serverless.yml -e 'datadog' -s
 ```
 
 Find all subdirectories under `/tmp/sample/repo` (but exclude the root directory `/tmp/sample/repo`)

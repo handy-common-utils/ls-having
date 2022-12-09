@@ -46,7 +46,7 @@ func TestDoMainNoArgument(t *testing.T) {
 	output, error := runDoMainForTesting()
 	assert.Equal(t, "", output)
 	assert.Greater(t, len(error), 0, "There should be error")
-	assert.Equal(t, "Error: flag file has not been specified\n", error)
+	assert.Equal(t, "Error: flag file or check file must be specified\n", error)
 }
 
 func TestDoMainHelp(t *testing.T) {
@@ -61,6 +61,15 @@ var validArgumentsAndExpectedOutputs = []struct {
 }{
 	{
 		"-f package.json testdata/repo1",
+		`testdata/repo1
+testdata/repo1/inbound
+testdata/repo1/outbound/New Zealand
+testdata/repo1/outbound/china
+testdata/repo1/outbound/china/mainland
+`,
+	},
+	{
+		"-c package.json testdata/repo1",
 		`testdata/repo1
 testdata/repo1/inbound
 testdata/repo1/outbound/New Zealand
@@ -200,7 +209,7 @@ var invalidArgumentsAndExpectedOutputs = []struct {
 	{
 		`testdata/non-existing-dir`,
 		"",
-		"Error: flag file has not been specified\n",
+		"Error: flag file or check file must be specified\n",
 	},
 	{
 		`-f anything --error print testdata/non-existing-dir`,

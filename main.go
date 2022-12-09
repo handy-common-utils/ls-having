@@ -105,8 +105,13 @@ func doMain(printOutput func(text string), handleError func(errors []string, pri
 	}
 
 	if len(optFlagFiles) == 0 {
-		handleError([]string{"flag file has not been specified"}, true, DEFAULT_EXIT_CODE_WHEN_ERROR)
-		return
+		if len(*optCheckFile) == 0 {
+			handleError([]string{"flag file or check file must be specified"}, true, DEFAULT_EXIT_CODE_WHEN_ERROR)
+			return
+		} else {
+			// assuming the check file is also the flag file
+			optFlagFiles = append(optFlagFiles, *optCheckFile)
+		}
 	}
 
 	if !*optNoDefaultExcludes {
