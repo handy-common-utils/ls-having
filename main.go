@@ -18,8 +18,8 @@ import (
 )
 
 func main() {
-	setupFlags()               // this function can't be called more than one time globally
-	doMain(print, handleError) // this function is also called in every test case
+	setupFlags()                       // this function can't be called more than one time globally
+	doMain(printToStdout, handleError) // this function is also called in every test case
 }
 
 const OPT_ERROR_PANIC = "panic"
@@ -91,7 +91,7 @@ func parseFlags() {
 	getopt.Parse()
 }
 
-func doMain(print func(text string), handleError func(errors []string, printUsage bool, exitCode int)) {
+func doMain(printOutput func(text string), handleError func(errors []string, printUsage bool, exitCode int)) {
 	parseFlags()
 
 	if *optHelp {
@@ -149,8 +149,8 @@ func doMain(print func(text string), handleError func(errors []string, printUsag
 		if *optPrint0 {
 			separator = string([]byte{0})
 		}
-		print(strings.Join(dirs, separator))
-		print(separator)
+		printOutput(strings.Join(dirs, separator))
+		printOutput(separator)
 	}
 }
 
@@ -172,7 +172,7 @@ func (i *arrayFlag) Set(value string) error {
 	return nil
 }
 
-func print(text string) {
+func printToStdout(text string) {
 	fmt.Print(text)
 }
 
