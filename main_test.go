@@ -147,6 +147,7 @@ testdata/repo1/outbound/china/mainland
 	{
 		`-f package.* -c package.json -e "@types/mocha": -i testdata/repo1`,
 		`testdata/repo1
+testdata/repo1/api
 testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland
@@ -198,6 +199,29 @@ testdata/repo1/storage
 	{
 		`-f anything --error ignore testdata/non-existing-dir`,
 		"",
+	},
+	{
+		`-f package.json -c node_modules/package1/package.json testdata/repo1`,
+		"testdata/repo1/outbound/china/mainland\n",
+	},
+	{
+		`-f package.json -c ../australia/serverless.yml testdata/repo1`,
+		`testdata/repo1/outbound/New Zealand
+testdata/repo1/outbound/china
+`,
+	},
+	{
+		`-f package.json -c ../australia testdata/repo1`,
+		`testdata/repo1/outbound/New Zealand
+testdata/repo1/outbound/china
+`,
+	},
+	{
+		`-f package.json -c ../australia -i testdata/repo1`,
+		`testdata/repo1
+testdata/repo1/inbound
+testdata/repo1/outbound/china/mainland
+`,
 	},
 }
 

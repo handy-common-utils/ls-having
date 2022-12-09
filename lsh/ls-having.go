@@ -165,12 +165,23 @@ func match(options *Options, dir *dirEntryEx, entries *[]dirEntryEx) bool {
 		checkFileMismatch = false
 	} else {
 		checkFilePath := filepath.Join(dir.Path, options.CheckFile)
-		checkFileContent, err := os.ReadFile(checkFilePath)
+		checkFileDirInfo, err := os.Stat(checkFilePath)
 		if err != nil {
-			checkFileMismatch = true
+			// can't find or cannot read check file/dir
+			checkFileMismatch = !options.CheckInverse
 		} else {
-			checkFileMismatch = !options.CheckRegexp.Match(checkFileContent)
-			checkFileMismatch = checkFileMismatch != options.CheckInverse
+			if checkFileDirInfo.IsDir() { // it is a directory
+				// ".*" is the default matching all expression
+				checkFileMismatch = options.CheckRegexp.String() == ".*" == options.CheckInverse
+			} else { // it is a file
+				checkFileContent, err := os.ReadFile(checkFilePath)
+				if err != nil {
+					checkFileMismatch = true
+				} else {
+					checkFileMismatch = !options.CheckRegexp.Match(checkFileContent)
+					checkFileMismatch = checkFileMismatch != options.CheckInverse
+				}
+			}
 		}
 	}
 	return foundFlagFile && !checkFileMismatch

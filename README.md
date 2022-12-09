@@ -71,9 +71,16 @@ References:
   Home page: https://github.com/handy-common-utils/ls-having
 ```
 
-### Flag file and root directory
+### Root directory
 
-Flag file or check file must be specified,
+The root directory can be omitted from the command line arguments.
+In such case, current directory (`./`) would be used as the root directory.
+
+If the root directory is specified, it must be the last argument.
+
+### Flag file
+
+Flag file (`-f` or `--flag-file`) or check file (`-c` or `--check-file`) must be specified,
 otherwise `ls-having` would print out an error message and exit.
 
 One or several flag file globs can be specified.
@@ -82,10 +89,17 @@ In such case check file and check file expression are optional.
 If a check file is specified, flag file can be omitted.
 In such case the check file is also used as the flag file.
 
-The root directory can be omitted from the command line arguments.
-In such case, current directory (`./`) would be used as the root directory.
+### Check file
 
-If the root directory is specified, it must be the last argument.
+The check file specified by `-c` or `--check-file` is an additional file
+that can be checked in the directories having the flag file.
+Its value can be a relative path.
+
+A regular expression can be specified with `-e` or `--check-regexp` for the checking.
+If omitted, the default expression is `.*`.
+
+The check "file" can also be just a subdirectory.
+In such case the check expression must be omitted or `.*`.
 
 ### Default excludes
 
@@ -171,11 +185,28 @@ Please note that if you use `*` in the argument as part of a
 glob or regular expression, you need to quote the argument with single quotes,
 otherwise the shell could interpret and translate it before it reaches the program.
 
-Find all subdirectories having `cdk.json`,
+Find all directories having `cdk.json`,
 and also a `package.json` file containing text `"@types/mocha":`:
 
 ```sh
 ls-having -f cdk.json -c package.json -e '"@types/mocha":'
+```
+
+Find all directories having `package.json` and also a `node_modules/package1/package.json` file in its subdirectory:
+
+```sh
+ls-having -f package.json -c node_modules/package1/package.json
+```
+
+Please note that the check file used above is a relative path,
+and the excluding logic does not apply to this path.
+You can even use `..` and the check "file" could be a directory,
+below are more examples:
+
+```sh
+ls-having -f package.json -c ../australia/serverless.yml -e datadog
+ls-having -f package.json -c ../australia
+ls-having -f package.json -c ../australia -i
 ```
 
 Find all subdirectories (but exclude the current directory `./`)
