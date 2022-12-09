@@ -171,6 +171,28 @@ testdata/repo1/storage
 	},
 }
 
+var invalidArgumentsAndExpectedOutputs = []struct {
+	arguments string
+	output    string
+	error     string
+}{
+	{
+		`testdata/non-existing-dir`,
+		"",
+		"Error: flag file has not been specified\n",
+	},
+	{
+		`-f anything --error print testdata/non-existing-dir`,
+		"",
+		"Error: stat testdata/non-existing-dir: no such file or directory\n",
+	},
+	{
+		`-f anything --error panic testdata/non-existing-dir`,
+		"",
+		"Error: stat testdata/non-existing-dir: no such file or directory\n",
+	},
+}
+
 func TestDoMainWithValidArguments(t *testing.T) {
 	spaces := regexp.MustCompile(" +")
 	for _, vaaeo := range validArgumentsAndExpectedOutputs {
@@ -178,6 +200,18 @@ func TestDoMainWithValidArguments(t *testing.T) {
 		t.Run(vaaeo.arguments, func(t *testing.T) {
 			output, error := runDoMainForTesting(args...)
 			assert.Equal(t, 0, len(error), "There should be no error")
+			assert.Equal(t, vaaeo.output, output, "Should output exactly these")
+		})
+	}
+}
+
+func TestDoMainWithInvalidArguments(t *testing.T) {
+	spaces := regexp.MustCompile(" +")
+	for _, vaaeo := range invalidArgumentsAndExpectedOutputs {
+		args := spaces.Split(vaaeo.arguments, -1)
+		t.Run(vaaeo.arguments, func(t *testing.T) {
+			output, error := runDoMainForTesting(args...)
+			assert.Equal(t, vaaeo.error, error, "Should generate exactly these error")
 			assert.Equal(t, vaaeo.output, output, "Should output exactly these")
 		})
 	}
