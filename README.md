@@ -214,10 +214,10 @@ See [main.go](https://github.com/handy-common-utils/ls-having/blob/master/main.g
 go run . <command line arguments>
 ```
 
-**Test**
+**Test (with coverage percentage shown)**
 
 ```
-go test
+go test -coverpkg=github.com/handy-common-utils/ls-having/lsh,github.com/handy-common-utils/ls-having
 ```
 
 **Release**
