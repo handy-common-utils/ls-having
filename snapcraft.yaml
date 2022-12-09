@@ -6,7 +6,9 @@ description: |
   and also suitable for CI/CD use cases.
   It is quick and small. Pre-built binaries are available for Linux, MacOS, and Windows.
 
-  Home page: https://github.com/handy-common-utils/ls-having
+  **Home page**: https://github.com/handy-common-utils/ls-having
+
+  **Usage**
 
   ```
   Usage: ls-having -f name-or-glob [options] [root-dir]
@@ -27,6 +29,30 @@ description: |
     Regexp syntax: https://pkg.go.dev/regexp/syntax
     Home page: https://github.com/handy-common-utils/ls-having  
   ```
+
+  **Examples**
+
+  Find all directories in `./` having `package.json` file,
+  and run `npm audit fix` in them one by one:
+
+  ```sh
+  ls-having -f package.json | xargs -I {} bash -c 'cd "{}"; npm audit fix'
+  ```
+
+  Find all directories in `./` having `package.json` file
+  and the `package.json` file does not contain `"volta":`:
+
+  ```sh
+  ls-having -f package.json -c package.json -i -e '"volta":'
+  ```
+
+  Find all directories in `./` having `package.json` file
+  and the `package.json` file has `mocha` specified as a dependency,
+  then for each of those directories reinstall latest version of `mocha` as dev-dependency:
+
+  ```sh
+  ls-having -f package.json -c package.json -e '"dependencies":\s*{[^{}]*"mocha":' | xargs -I {} bash -c 'cd {}; npm i -D mocha@latest'
+  ```  
 version: git
 grade: stable
 base: core20
