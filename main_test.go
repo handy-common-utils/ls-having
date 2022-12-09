@@ -67,10 +67,12 @@ testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland
 `,
-	}, {
+	},
+	{
 		"-f package.json -d 0 testdata/repo1",
 		"testdata/repo1\n",
-	}, {
+	},
+	{
 		"-f package.json --no-default-excludes testdata/repo1",
 		`testdata/repo1
 testdata/repo1/inbound
@@ -80,34 +82,41 @@ testdata/repo1/outbound/china/mainland
 testdata/repo1/outbound/china/mainland/node_modules/package1
 testdata/repo1/outbound/china/mainland/node_modules/package2
 `,
-	}, {
+	},
+	{
 		"-f package.json --depth 0 testdata/repo1/inbound",
 		"testdata/repo1/inbound\n",
-	}, {
+	},
+	{
 		"-f package.json --depth 0 --subdirectories-only --no-default-excludes testdata/repo1/inbound",
 		"",
-	}, {
+	},
+	{
 		"-f package.json --subdirectories-only --no-default-excludes testdata/repo1/outbound/china/mainland",
 		`testdata/repo1/outbound/china/mainland/node_modules/package1
 testdata/repo1/outbound/china/mainland/node_modules/package1/node_modules/package1-1
 testdata/repo1/outbound/china/mainland/node_modules/package2
 `,
-	}, {
+	},
+	{
 		"-f serverless.* testdata/repo1",
 		`testdata/repo1/inbound
 testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/australia
 testdata/repo1/outbound/china/sars
 `,
-	}, {
+	},
+	{
 		"-f serverless.ts testdata/repo1",
 		"testdata/repo1/outbound/china/sars\n",
-	}, {
+	},
+	{
 		"-f serverless.* -c build.gradle testdata/repo1",
 		`testdata/repo1/outbound/australia
 testdata/repo1/outbound/china/sars
 `,
-	}, {
+	},
+	{
 		"-f package.* -c package.json testdata/repo1",
 		`testdata/repo1
 testdata/repo1/inbound
@@ -115,57 +124,69 @@ testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland
 `,
-	}, {
+	},
+	{
 		"-f package.* -c package.yml testdata/repo1",
 		`testdata/repo1/api
 `,
-	}, {
+	},
+	{
 		`-f package.* -c package.json -e "@types/mocha": testdata/repo1`,
 		`testdata/repo1/inbound
 `,
-	}, {
+	},
+	{
 		`-f package.* -c package.json -e "@types/mocha": -i testdata/repo1`,
 		`testdata/repo1
 testdata/repo1/outbound/New Zealand
 testdata/repo1/outbound/china
 testdata/repo1/outbound/china/mainland
 `,
-	}, {
+	},
+	{
 		`-f package.* -c package.json -e "volta": testdata/repo1`,
 		`testdata/repo1/inbound
 `,
-	}, {
+	},
+	{
 		`-f package.* -c package.json -e "dependencies":\s*{[^{}]*"volta": testdata/repo1`,
 		"",
-	}, {
+	},
+	{
 		`-f package.* -c package.json -e "dependencies":\s*{[^{}]*"mocha": testdata/repo1`,
 		`testdata/repo1/inbound
 `,
-	}, {
+	},
+	{
 		`-f build.gradle* testdata/repo1`,
 		`testdata/repo1/outbound/australia
 testdata/repo1/outbound/china/sars
 testdata/repo1/outbound/usa
 `,
-	}, {
+	},
+	{
 		`-f build.gradle testdata/repo1`,
 		`testdata/repo1/outbound/australia
 testdata/repo1/outbound/china/sars
 `,
-	}, {
+	},
+	{
 		`-f build.gradle -f mvn.* testdata/repo1`,
 		`testdata/repo1/outbound/australia
 testdata/repo1/outbound/china/sars
 testdata/repo1/storage
 `,
-	}, {
+	},
+	{
 		`-f build.gradle -f mvn.* -x **/australia -x **/storage testdata/repo1`,
 		`testdata/repo1/outbound/china/sars
 `,
-	}, {
+	},
+	{
 		`-f anything testdata/non-existing-dir`,
 		"",
-	}, {
+	},
+	{
 		`-f anything --error ignore testdata/non-existing-dir`,
 		"",
 	},
