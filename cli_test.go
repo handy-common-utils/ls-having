@@ -42,6 +42,27 @@ func TestCliNoArgument(t *testing.T) {
 	assert.Equal(t, "Error: flag file has not been specified\n", stderr)
 }
 
+func TestCliErrorPanicNonExistingDir(t *testing.T) {
+	code, stdout, stderr := runCliForTesting(t, "-f", "package.json", "--error", "panic", "./non-existing-dir")
+	assert.Equal(t, 1, code, "Exit code should be 1")
+	assert.Equal(t, 0, len(stdout), "Should have nothing sent to stdout")
+	assert.Equal(t, "Error: stat ./non-existing-dir: no such file or directory\n", stderr)
+}
+
+func TestCliErrorIgnoreNonExistingDir(t *testing.T) {
+	code, stdout, stderr := runCliForTesting(t, "-f", "package.json", "--error", "ignore", "./non-existing-dir")
+	assert.Equal(t, 0, code, "Exit code should be 0")
+	assert.Equal(t, 0, len(stdout), "Should have nothing sent to stdout")
+	assert.Equal(t, 0, len(stderr), "Should have nothing sent to stderr")
+}
+
+func TestCliErrorPrintNonExistingDir(t *testing.T) {
+	code, stdout, stderr := runCliForTesting(t, "-f", "package.json", "--error", "print", "./non-existing-dir")
+	assert.Equal(t, 0, code, "Exit code should be 0")
+	assert.Equal(t, 0, len(stdout), "Should have nothing sent to stdout")
+	assert.Equal(t, "Error: stat ./non-existing-dir: no such file or directory\n", stderr)
+}
+
 func TestCliHelp(t *testing.T) {
 	code, stdout, stderr := runCliForTesting(t, "-h")
 	assert.Equal(t, 0, code, "Exit code should be 0")

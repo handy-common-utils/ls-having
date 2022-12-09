@@ -58,6 +58,7 @@ Options:
   -i, --check-inverse            regard regular expression not matching as positive
   -e, --check-regexp expression  regular expression for testing the content of the check file (default ".*")
   -d, --depth int                how deep to look into subdirectories, 0 means only look at root directory, -1 means no limit (default 5)
+  -r, --error string             how to handle errors such like non-existing directory, no access permission, etc. (ignore|panic|print) (default "ignore")
   -x, --exclude glob             glob of the directories to exclude, this option can appear multiple times
   -f, --flag-file glob           name or glob of the flag file, this option can appear multiple times
   -h, --help                     show help information
@@ -105,6 +106,19 @@ considered as at level 1, so on and so forth.
 Option `--depth` or `-d` can be used to specify the maximum depth.
 If a negative number is specified, `ls-having` will keep digging down
 untill there is no more subdirectory.
+
+### Error handling
+
+By default `ls-having` ignores errors during processing,
+and does not print out any error message to either stdout or stderr.
+Typical error situations could be that the root directory does not exist,
+the user does not have permission to access the root directory or any subdirectory, or a check file, etc.
+
+By setting `--error panic` option, you can tell `ls-having` to stop immediately
+with exit code 1 and have error message printed to stderr in case an error happens.
+
+By setting `--error print` option, you can tell `ls-having` to ignore
+errors during processing, but print out all error messages to stderr.
 
 ### Examples
 

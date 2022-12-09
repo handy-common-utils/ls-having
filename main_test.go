@@ -12,7 +12,12 @@ func init() {
 	setupFlags()
 }
 
-func runDoMainForTesting(args ...string) (output string, hasError bool, error string) {
+// Run doMain(...)
+//
+// Results:
+//   - output: the content supposed to be sent to stdout
+//   - error: the content supposed to be sent to stderr
+func runDoMainForTesting(args ...string) (output string, error string) {
 	// setup arguments
 	oldArgs := os.Args
 	defer func() { os.Args = oldArgs }()
@@ -20,18 +25,17 @@ func runDoMainForTesting(args ...string) (output string, hasError bool, error st
 
 	// clear up output
 	output = ""
-	hasError = false
 	error = ""
 
 	// doMain()
 	doMain(func(text string) {
 		output += text
-	}, func(text string) {
-		if len(text) > 0 {
-			hasError = true
-			error = text
+	}, func(errors []string, printUsage bool, exitCode int) {
+		if len(errors) > 0 {
+			for _, errorString := range errors {
+				error += "Error: " + errorString + "\n"
+			}
 		} else {
-			hasError = false
 			error = ""
 		}
 	})
@@ -39,15 +43,15 @@ func runDoMainForTesting(args ...string) (output string, hasError bool, error st
 }
 
 func TestDoMainNoArgument(t *testing.T) {
-	output, hasError, error := runDoMainForTesting()
+	output, error := runDoMainForTesting()
 	assert.Equal(t, "", output)
-	assert.True(t, hasError, "There should be error")
-	assert.Equal(t, "flag file has not been specified", error)
+	assert.Greater(t, len(error), 0, "There should be error")
+	assert.Equal(t, "Error: flag file has not been specified\n", error)
 }
 
 func TestDoMainHelp(t *testing.T) {
-	output, hasError, _ := runDoMainForTesting("--help")
-	assert.False(t, hasError, "There should be no error")
+	output, error := runDoMainForTesting("--help")
+	assert.Equal(t, 0, len(error), "There should be no error")
 	assert.Equal(t, "", output)
 }
 
@@ -158,6 +162,12 @@ testdata/repo1/storage
 		`-f build.gradle -f mvn.* -x **/australia -x **/storage testdata/repo1`,
 		`testdata/repo1/outbound/china/sars
 `,
+	}, {
+		`-f anything testdata/non-existing-dir`,
+		"",
+	}, {
+		`-f anything --error ignore testdata/non-existing-dir`,
+		"",
 	},
 }
 
@@ -166,8 +176,8 @@ func TestDoMainWithValidArguments(t *testing.T) {
 	for _, vaaeo := range validArgumentsAndExpectedOutputs {
 		args := spaces.Split(vaaeo.arguments, -1)
 		t.Run(vaaeo.arguments, func(t *testing.T) {
-			output, hasError, _ := runDoMainForTesting(args...)
-			assert.False(t, hasError, "There should be no error")
+			output, error := runDoMainForTesting(args...)
+			assert.Equal(t, 0, len(error), "There should be no error")
 			assert.Equal(t, vaaeo.output, output, "Should output exactly these")
 		})
 	}

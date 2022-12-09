@@ -5,7 +5,6 @@ package lsh
 
 import (
 	"io/fs"
-	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -39,15 +38,39 @@ type Options struct {
 
 	// Regard not matching as positive when using CheckRegexp to check the content of CheckFile
 	CheckInverse bool
+
+	// To return immedately when any error (such like non-existing directory or no access permission) happens
+	PanicOnError bool
 }
 
 // Find directories matching conditions.
-// The array of paths returned is sorted in ascend order.
-func LsHaving(options *Options, rootDir string) []string {
-	var found []string = make([]string, 0, 100)
-	doLsHaving(options, &found, rootDir, 0, nil) // root dir has depth 0
+//
+// The array of paths is returned as the first value,
+// it could be an empty array but would never be nil,
+// and the array is sorted in ascend order.
+// If there is no error, the second value returned would be nil.
+// If there is any error, the array of error messages is returned as the second value.
+//
+// If the options tells this function to panic on error,
+// the function would return immediately once there's an error.
+// In such case the first returned value could contain some paths,
+// and the second returned value would contain the error message.
+//
+// If the options tells this function to not panic on error,
+// the function would record the error but continue working in case an error happens.
+// In such case the first returned value would contain all paths found,
+// and the second returned value would contain the error messages.
+func LsHaving(options *Options, rootDir string) (found []string, errors []string) {
+	found = make([]string, 0, 100)
+	errors = make([]string, 0, 10)
+
+	doLsHaving(options, &found, &errors, rootDir, 0, nil) // root dir has depth 0
+
 	sort.Strings(found)
-	return found
+	if len(errors) == 0 {
+		errors = nil
+	}
+	return
 }
 
 type dirEntryEx struct {
@@ -58,29 +81,35 @@ type dirEntryEx struct {
 
 // Read all entries under the specified directory.
 // The "depth" parameter is the depth of the directory specified by "dir" parameter.
-func readEntries(dir string, depth int) *[]dirEntryEx {
+//
+// In case any error happens, the returned values would have an empty array and the error
+func readEntries(dir string, depth int) (*[]dirEntryEx, error) {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		log.Fatal(err) // panic if can't list the content in the directory
+		return &[]dirEntryEx{}, err
 	}
 	entriesEx := make([]dirEntryEx, 0, len(entries))
 	for _, entry := range entries {
 		entriesEx = append(entriesEx, dirEntryEx{filepath.Join(dir, entry.Name()), depth + 1, entry})
 	}
-	return &entriesEx
+	return &entriesEx, nil
 }
 
-func doLsHaving(options *Options, found *[]string, dir string, depth int, entriesInDir *[]dirEntryEx) {
+func doLsHaving(options *Options, found *[]string, errors *[]string, dir string, depth int, entriesInDir *[]dirEntryEx) {
 	if entriesInDir == nil { // this must be the root dir
-		if depth != 0 {
-			log.Fatal("Internal error: entriesInDir == nil but depth != 0")
-		}
 		rootDirInfo, err := os.Stat(dir)
 		if err != nil {
-			log.Fatal(err) // panic if can't read the root directory
+			*errors = append(*errors, err.Error())
+			return // If root dir cannot be read, there's no point to continue even if options.PanicOnError == false
 		}
 		rootDirEntryEx := dirEntryEx{dir, 0, fs.FileInfoToDirEntry(rootDirInfo)}
-		entriesInDir = readEntries(dir, 0)
+		entriesInDir, err = readEntries(dir, 0)
+		if err != nil {
+			*errors = append(*errors, err.Error())
+			if options.PanicOnError {
+				return
+			}
+		}
 
 		if shouldCheck(options, &rootDirEntryEx) {
 			if match(options, &rootDirEntryEx, entriesInDir) {
@@ -91,11 +120,17 @@ func doLsHaving(options *Options, found *[]string, dir string, depth int, entrie
 
 	for _, entry := range *entriesInDir {
 		if shouldCheck(options, &entry) {
-			entriesInSubDir := readEntries(entry.Path, entry.Depth)
+			entriesInSubDir, err := readEntries(entry.Path, entry.Depth)
+			if err != nil {
+				*errors = append(*errors, err.Error())
+				if options.PanicOnError {
+					return
+				}
+			}
 			if match(options, &entry, entriesInSubDir) {
 				*found = append(*found, entry.Path)
 			}
-			doLsHaving(options, found, entry.Path, entry.Depth, entriesInSubDir)
+			doLsHaving(options, found, errors, entry.Path, entry.Depth, entriesInSubDir)
 		}
 	}
 }
