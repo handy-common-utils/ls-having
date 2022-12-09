@@ -211,7 +211,7 @@ import (
 )
 
 func main() {
-	var dirs = lsh.LsHaving(&lsh.Options{
+	var dirs, errors = lsh.LsHaving(&lsh.Options{
 		// options here
 	}, rootDir)
 	fmt.Println(dirs)
