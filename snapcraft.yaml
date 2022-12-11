@@ -1,15 +1,22 @@
 name: ls-having
 summary: List directories having specified flag files and meeting other conditions. 
 description: |
-  This is a tool that can list directories having specified flag files and optionally meeting other specified conditions.
-  It is handy for developers maintaining mono repos that have multiple projects in each repo,
-  and also suitable for CI/CD use cases.
-  It is quick and small. Pre-built binaries are available for Linux, MacOS, and Windows.
+  `ls-having` is a powerful open-source tool that makes it easy to find directories. With a simple and intuitive command-line interface, "ls-having" allows you to quickly search for directories based on specified flag files and other conditions, saving you time and effort. Whether you're a developer who works with mono repos, or you just need an easy way to find your directories, "ls-having" is the perfect tool for you.
 
-  **Home page**: https://github.com/handy-common-utils/ls-having
+  - Flexible search options: "ls-having" allows you to specify various options and conditions for searching for directories, such as flag files, the check file, regular expressions for matching the check file, excludes, and maximum depth.
+  - Configurable error handling: "ls-having" provides an option for configuring how it handles errors such as non-existing directory or no access permission, allowing users to customize and integrate the tool for different situations.
+  - Cross-platform support: "ls-having" is available for Linux, MacOS, and Windows.
+  - Small and quick: "ls-having" has just one native executable file, there is no dependency on anything else, and the tool is just about 2MB in size. It starts and runs very quickly.
 
-  To install for MacOS, try `brew install handy-common-utils/tap/ls-having`.
-  To download executables (including `ls-having.exe`) directly, visit: https://github.com/handy-common-utils/ls-having/releases
+  **Quick start**
+
+  Try this:
+
+  `ls-having -f package.json`
+
+  This will search for directories containing a "package.json" file in the current directory and print the names of those directories to the console. You can then use the output of "ls-having" as arguments for other commands, such as "xargs", to perform actions on those directories.
+
+  For more information on how to use "ls-having" and the available options and arguments, visit https://github.com/handy-common-utils/ls-having or run the `ls-having --help` command.
 
   **Usage**
 
