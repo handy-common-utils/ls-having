@@ -31,7 +31,7 @@ On Linux, *ls-having* is available in the [snap store](https://snapcraft.io/ls-h
 sudo snap install ls-having
 ```
 
-Snap store is preinstalled in some Linux distributions.
+Snap store is preinstalled in some Linux distributions (such like Ubuntu).
 If it is not available, you can [install it](https://snapcraft.io/docs/installing-snapd) by yourself.
 
 **Manual download (works for Windows)**
