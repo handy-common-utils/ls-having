@@ -55,7 +55,7 @@ func setupFlags() {
 	optNoDefaultExcludes = flag.Bool("no-default-excludes", false, "don't apply default excludes")
 	optOnlySubdirectories = flag.Bool("subdirectories-only", false, "don't return root directory even if it meets conditions")
 	optPrint0 = flag.Bool("print0", false, "separate paths in the output with null characters (instead of newline characters)")
-	optError = flag.String("error", DEFAULT_ERROR, "how to handle errors such like non-existing directory, no access permission, etc. (ignore|panic|print)")
+	optError = flag.String("error", DEFAULT_ERROR, "how (`ignore|panic|print`) to handle errors such like non-existing directory, no access permission, etc.")
 
 	getopt.Aliases(
 		"h", "help",
