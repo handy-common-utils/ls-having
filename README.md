@@ -25,7 +25,7 @@ brew install handy-common-utils/tap/ls-having
 
 **Linux (all kinds of)**
 
-On Linux, "ls-having" is available in the [snap store](https://snapcraft.io/ls-having) and can be installed through snap:
+On Linux, *ls-having* is available in the [snap store](https://snapcraft.io/ls-having) and can be installed through snap:
 
 ```shell
 sudo snap install ls-having
@@ -36,7 +36,7 @@ If it is not available, you can [install it](https://snapcraft.io/docs/installin
 
 **Manual download (works for Windows)**
 
-For Windows, you can manually download the "ls-having" executable from the [releases page on GitHub](https://github.com/handy-common-utils/ls-having/releases) and unzip and copy the file to the desired location.
+For Windows, you can manually download the *ls-having* executable from the [releases page on GitHub](https://github.com/handy-common-utils/ls-having/releases) and unzip and copy the file to the desired location.
 
 You can download executables and install for other operating systems as well.
 
