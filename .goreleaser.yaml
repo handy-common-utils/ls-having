@@ -84,7 +84,7 @@ brews:
 
     # Template of your app's description.
     # Default is empty.
-    description: "Command 'ls-having' can list directories having specified flag files and optionally meeting other specified conditions."
+    description: "A command-line tool for finding directories based on specified flag files and other conditions"
 
     # SPDX identifier of your app's license.
     # Default is empty.
