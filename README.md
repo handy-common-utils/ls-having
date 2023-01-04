@@ -15,7 +15,7 @@ A command-line tool for finding directories based on specified flag files and ot
 
 ## Installation
 
-**MacOS (Intel or Apple silicon)**
+**MacOS (Intel or Apple silicon) and Linux and WSL**
 
 On MacOS, you can use the [Homebrew](https://brew.sh/) package manager to install *ls-having*:
 
@@ -23,7 +23,9 @@ On MacOS, you can use the [Homebrew](https://brew.sh/) package manager to instal
 brew install handy-common-utils/tap/ls-having
 ```
 
-**Linux (all kinds of)**
+Homebrew also supports Linux and WSL.
+
+**Linux (all kinds of, except Ubuntu in WSL)**
 
 On Linux, *ls-having* is available in the [snap store](https://snapcraft.io/ls-having) and can be installed through snap:
 
@@ -34,7 +36,10 @@ sudo snap install ls-having
 Snap store is preinstalled in some Linux distributions (such like Ubuntu).
 If it is not available, you can [install it](https://snapcraft.io/docs/installing-snapd) by yourself.
 
-**Manual download (works for Windows)**
+As of Janurary 2023, a component (`snapd`) required by snap does not work in Ubuntu running in WSL.
+The workaround is to install through Homebrew.
+
+**Manual download (works for Windows and others)**
 
 For Windows, you can manually download the *ls-having* executable from the [releases page on GitHub](https://github.com/handy-common-utils/ls-having/releases) and unzip and copy the file to the desired location.
 
