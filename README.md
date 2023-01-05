@@ -265,7 +265,13 @@ Make sure all the node versions specified by `.nvmrc` files are installed:
 ls-having -f .nvmrc | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm install'
 ```
 
-Please note that sourcing `~/.nvm/nvm.sh` is needed because nvm alias is not automatically avaible in subshells. 
+Please note that sourcing `~/.nvm/nvm.sh` is needed because nvm alias is not automatically avaible in subshells.
+
+List all different node versions specified in `.nvmrc` files:
+
+```shell
+ls-having -f .nvmrc | xargs -I {} bash -c 'cat {}/.nvmrc; echo;' | sed 's/^v// ; /^$/d' | sort -u
+```
 
 Use null character (instead of newline character) as separator in the output,
 so that `-0` option of xargs can be used:
