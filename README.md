@@ -273,6 +273,18 @@ List all different node versions specified in `.nvmrc` files:
 ls-having -f .nvmrc | xargs -I {} bash -c 'cat {}/.nvmrc; echo;' | sed 's/^v// ; /^$/d' | sort -u
 ```
 
+Install dependencies in those directories having `.nvmrc` but not using `yarn`:
+
+```shell
+ls-having -f .nvmrc -c yarn.lock -i | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm use; npm ci'
+```
+
+Install dependencies in those directories having `.nvmrc` and using `yarn`:
+
+```shell
+ls-having -f .nvmrc -c yarn.lock | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm use; npm ci'
+```
+
 Use null character (instead of newline character) as separator in the output,
 so that `-0` option of xargs can be used:
 
