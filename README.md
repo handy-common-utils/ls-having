@@ -97,7 +97,7 @@ You must specify at least one flag file (`-f`/`--flag-file`) or check file (`-c`
 otherwise *ls-having* would print out an error message and exit.
 
 You can specify multiple flag files by using the `-f`/`--flag-file` option multiple times.
-In such case, directories having any of those files or matching any of those globs will be returned.
+In such case, directories having **any** of those files or matching **any** of those globs will be returned.
 
 If you have check file (`-c`/`--check-file`) specified and want to use the check file as the flag file, you can omit the `-f`/`--flag-file` option.
 In this case, the check file will also be used as the flag file.
@@ -282,7 +282,7 @@ ls-having -f .nvmrc -c yarn.lock -i | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "
 Install dependencies in those directories having `.nvmrc` and using `yarn`:
 
 ```shell
-ls-having -f .nvmrc -c yarn.lock | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm use; npm ci'
+ls-having -f .nvmrc -c yarn.lock | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm use; npm i -g yarn; yarn install --frozen-lockfile'
 ```
 
 Use null character (instead of newline character) as separator in the output,
