@@ -259,6 +259,14 @@ having `build.gradle*` and print out their details:
 ls-having -f 'build.gradle*' /tmp/sample/repo | xargs -I {} bash -c 'cd {}; pwd; ls -l build.gradle*'
 ```
 
+Make sure all the node versions specified by `.nvmrc` files are installed:
+
+```shell
+ls-having -f .nvmrc | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm install'
+```
+
+Please note that sourcing `~/.nvm/nvm.sh` is needed because nvm alias is not automatically avaible in subshells. 
+
 Use null character (instead of newline character) as separator in the output,
 so that `-0` option of xargs can be used:
 
