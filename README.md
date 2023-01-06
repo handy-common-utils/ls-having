@@ -285,6 +285,12 @@ ls-having -f .nvmrc -c yarn.lock -i | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "
 ls-having -f .nvmrc -c yarn.lock | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm use; npm i -g yarn; yarn install --frozen-lockfile'
 ```
 
+‣ Find those having mismatch between the name in `package.json` and the name in `serverless.yml`:
+
+```shell
+ls-having -f package.json -c serverless.yml | xargs -I {} bash -c 'cd {}; NP=$(jq .name package.json); NS=$(yq .service serverless.yml); if [ "$NP" != "$NS" ]; then pwd; echo "$NP (in package.json) != $NS (in serverless.yml)"; fi'
+```
+
 ‣ Use null character (instead of newline character) as separator in the output,
 so that `-0` option of xargs can be used:
 
