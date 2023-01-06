@@ -228,6 +228,7 @@ ls-having -f package.json -c node_modules/package1/package.json
 
 Please note that the check file used above is a relative path,
 and the excluding logic does not apply to this path.
+
 You can even use `..` and the check "file" could be a directory,
 below are more examples:
 
