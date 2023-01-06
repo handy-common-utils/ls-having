@@ -171,21 +171,21 @@ If you specify the `--error print` option, *ls-having* will ignore errors during
 
 ### Examples
 
-Find all directories in `./` having `package.json` file,
+- Find all directories in `./` having `package.json` file,
 and run `npm audit fix` in them one by one:
 
 ```shell
 ls-having -f package.json | xargs -I {} bash -c 'cd "{}"; npm audit fix'
 ```
 
-Find all directories in `./` having `package.json` file
+- Find all directories in `./` having `package.json` file
 and the `package.json` file does not contain `"volta":`:
 
 ```shell
 ls-having -c package.json -i -e '"volta":'
 ```
 
-Find all directories in `./` having `package.json` file
+- Find all directories in `./` having `package.json` file
 and the `package.json` file has `mocha` specified as a dependency,
 then for each of those directories reinstall latest version of `mocha` as dev-dependency:
 
@@ -193,7 +193,7 @@ then for each of those directories reinstall latest version of `mocha` as dev-de
 ls-having -c package.json -e '"dependencies":\s*{[^{}]*"mocha":' | xargs -I {} bash -c 'cd {}; npm i -D mocha@latest'
 ```
 
-Find all directories in `./` having `package.json` file,
+- Find all directories in `./` having `package.json` file,
 go as deep as 8 levels, and don't apply default excludes
 (such like `.git` and `node_modules`):
 
@@ -201,7 +201,7 @@ go as deep as 8 levels, and don't apply default excludes
 ls-having -f package.json -d 8 -n
 ```
 
-Find all directories in `testdata/repo1` having `serverless.*`
+- Find all directories in `testdata/repo1` having `serverless.*`
 (such like `serverless.yml`, `serverless.ts`, `serverless.js`),
 and also having `package.json`:
 
@@ -213,14 +213,14 @@ Please note that if you use `*` in the argument as part of a
 glob or regular expression, you need to quote the argument with single quotes,
 otherwise the shell could interpret and translate it before it reaches the program.
 
-Find all directories having `cdk.json`,
+- Find all directories having `cdk.json`,
 and also a `package.json` file containing text `"@types/mocha":`:
 
 ```shell
 ls-having -f cdk.json -c package.json -e '"@types/mocha":'
 ```
 
-Find all directories having `package.json` and also a `node_modules/package1/package.json` file in its subdirectory:
+- Find all directories having `package.json` and also a `node_modules/package1/package.json` file in its subdirectory:
 
 ```shell
 ls-having -f package.json -c node_modules/package1/package.json
@@ -237,7 +237,7 @@ ls-having -f package.json -c ../australia
 ls-having -f package.json -c ../australia -i
 ```
 
-Find all subdirectories (but exclude the current directory `./`)
+- Find all subdirectories (but exclude the current directory `./`)
 having `package.json`,
 and also having `serverless.yml` file contain text `datadog`:
 
@@ -245,21 +245,21 @@ and also having `serverless.yml` file contain text `datadog`:
 ls-having -f package.json -c serverless.yml -e 'datadog' -s
 ```
 
-Find all subdirectories under `/tmp/sample/repo` (but exclude the root directory `/tmp/sample/repo`)
+- Find all subdirectories under `/tmp/sample/repo` (but exclude the root directory `/tmp/sample/repo`)
 having `build.gradle*` or `mvn.xml`:
 
 ```shell
 ls-having -f 'build.gradle*' -f 'mvn.xml' -s /tmp/sample/repo
 ```
 
-Find all directories in `/tmp/sample/repo`
+- Find all directories in `/tmp/sample/repo`
 having `build.gradle*` and print out their details:
 
 ```shell
 ls-having -f 'build.gradle*' /tmp/sample/repo | xargs -I {} bash -c 'cd {}; pwd; ls -l build.gradle*'
 ```
 
-Make sure all the node versions specified by `.nvmrc` files are installed:
+- Make sure all the node versions specified by `.nvmrc` files are installed:
 
 ```shell
 ls-having -f .nvmrc | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm install'
@@ -267,25 +267,25 @@ ls-having -f .nvmrc | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm install
 
 Please note that sourcing `~/.nvm/nvm.sh` is needed because nvm alias is not automatically avaible in subshells.
 
-List all different node versions specified in `.nvmrc` files:
+- List all different node versions specified in `.nvmrc` files:
 
 ```shell
 ls-having -f .nvmrc | xargs -I {} bash -c 'cat {}/.nvmrc; echo;' | sed 's/^v// ; /^$/d' | sort -u
 ```
 
-Install dependencies in those directories having `.nvmrc` but not using `yarn`:
+- Install dependencies in those directories having `.nvmrc` but not using `yarn`:
 
 ```shell
 ls-having -f .nvmrc -c yarn.lock -i | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm use; npm ci'
 ```
 
-Install dependencies in those directories having `.nvmrc` and using `yarn`:
+- Install dependencies in those directories having `.nvmrc` and using `yarn`:
 
 ```shell
 ls-having -f .nvmrc -c yarn.lock | xargs -I {} bash -c '. ~/.nvm/nvm.sh; cd "{}"; nvm use; npm i -g yarn; yarn install --frozen-lockfile'
 ```
 
-Use null character (instead of newline character) as separator in the output,
+- Use null character (instead of newline character) as separator in the output,
 so that `-0` option of xargs can be used:
 
 ```shell
