@@ -23,7 +23,7 @@ On MacOS, you can use the [Homebrew](https://brew.sh/) package manager to instal
 brew install handy-common-utils/tap/ls-having
 ```
 
-Homebrew also supports Linux and WSL.
+Installing through Homebrew is also supported in Linux and WSL.
 
 **Linux (all kinds of, except Ubuntu in WSL)**
 
@@ -32,6 +32,9 @@ On Linux, *ls-having* is available in the [snap store](https://snapcraft.io/ls-h
 ```shell
 sudo snap install ls-having
 ```
+
+Please note that due to the security model,
+by default *ls-having* installed through *snap* [can only access non-hidden files owned by the user in the user’s home ($HOME) directory](https://snapcraft.io/docs/home-interface).
 
 Snap store is preinstalled in some Linux distributions (such like Ubuntu).
 If it is not available, you can [install it](https://snapcraft.io/docs/installing-snapd) by yourself.
@@ -336,12 +339,11 @@ go test -coverpkg=github.com/handy-common-utils/ls-having/lsh,github.com/handy-c
 **Release**
 
 1. Push to `master` branch
-2. Tag with version number without prefix `v`.
-   For example, use tag `1.2.34`.
+2. Tag with version number with prefix `v`.
+   For example, use tag `v1.2.34`.
 3. Push the tag
 4. GitHub workflow will automatically release to
    [snapcraft](https://snapcraft.io/ls-having),
    Homebrew,
    and [pkg.go.dev](https://pkg.go.dev/github.com/handy-common-utils/ls-having).
-5. The workflow also automatically creates a tag with prefixed version number.
-   For example, `v1.2.34`
+
