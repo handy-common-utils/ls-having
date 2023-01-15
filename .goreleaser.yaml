@@ -96,17 +96,20 @@ snapcrafts:
       ls-having:
 
         plugs:
-          - home:
-              read: all
+          - home
           - removable-media
-          - personal-files:
-              read:
-                - $HOME
-          - system-files:
-              read:
-                - /
+          - personal-files
+          - system-files
 
-
+    plugs:
+      home:
+        read: all
+      personal-files:
+        read:
+          - $HOME
+      system-files:
+        read:
+          - /
 
 # modelines, feel free to remove those if you don't want/use them:
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
