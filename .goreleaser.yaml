@@ -98,15 +98,11 @@ snapcrafts:
         plugs:
           - home
           - removable-media
-          - personal-files
           - system-files
 
     plugs:
       home:
         read: all
-      personal-files:
-        read:
-          - $HOME
       system-files:
         read:
           - /
