@@ -96,7 +96,16 @@ snapcrafts:
       ls-having:
 
         plugs:
-          - home
+          - home:
+              read: all
+          - removable-media
+          - personal-files:
+              read:
+                - $HOME
+          - system-files:
+              read:
+                - /
+
 
 
 # modelines, feel free to remove those if you don't want/use them:
