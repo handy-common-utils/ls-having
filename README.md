@@ -15,7 +15,7 @@ A command-line tool for finding directories based on specified flag files and ot
 
 ## Installation
 
-**MacOS (Intel or Apple silicon) and Linux and WSL**
+**Through Homebrew - MacOS (Intel or Apple silicon) and Linux (x64 or ARM) and WSL**
 
 On MacOS, you can use the [Homebrew](https://brew.sh/) package manager to install *ls-having*:
 
@@ -25,7 +25,7 @@ brew install handy-common-utils/tap/ls-having
 
 Installing through Homebrew is also supported in Linux and WSL.
 
-**Linux (all kinds of, except Ubuntu in WSL)**
+**Through snap store - Linux (x64 or ARM, except Ubuntu in WSL)**
 
 On Linux, *ls-having* is available in the [snap store](https://snapcraft.io/ls-having) and can be installed through snap:
 
@@ -35,6 +35,7 @@ sudo snap install ls-having
 
 Please note that due to the security model,
 by default *ls-having* installed through *snap* [can only access non-hidden files owned by the user in the user’s home ($HOME) directory](https://snapcraft.io/docs/home-interface).
+If this is inconvenient, try to install through Homebrew or manual download.
 
 Snap store is preinstalled in some Linux distributions (such like Ubuntu).
 If it is not available, you can [install it](https://snapcraft.io/docs/installing-snapd) by yourself.
@@ -42,11 +43,19 @@ If it is not available, you can [install it](https://snapcraft.io/docs/installin
 As of Janurary 2023, a component (`snapd`) required by snap does not work in Ubuntu running in WSL.
 The workaround is to install through Homebrew.
 
-**Manual download (works for Windows and others)**
+**Manual download - Windows, Linux, and MacOS**
 
-For Windows, you can manually download the *ls-having* executable from the [releases page on GitHub](https://github.com/handy-common-utils/ls-having/releases) and unzip and copy the file to the desired location.
+For all the supported OS-arch combinations, you can manually download the *ls-having* executable from the [releases page on GitHub](https://github.com/handy-common-utils/ls-having/releases) and unzip and copy the file to the desired location.
 
-You can download executables and install for other operating systems as well.
+For example, below is the shell command line to download version *1.0.7* and install the executable to */usr/local/bin*:
+
+```sh
+curl -L -s -o ls-having.tar.gz https://github.com/handy-common-utils/ls-having/releases/download/v1.0.7/ls-having_1.0.7_linux_amd64.tar.gz \
+&& tar xf ls-having.tar.gz ls-having \
+&& mv ls-having /usr/local/bin \
+&& rm ls-having.tar.gz
+
+```
 
 ## Quick start
 

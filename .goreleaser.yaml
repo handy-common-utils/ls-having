@@ -98,14 +98,7 @@ snapcrafts:
         plugs:
           - home
           - removable-media
-          - system-files
 
-    plugs:
-      home:
-        read: all
-      system-files:
-        read:
-          - /
 
 # modelines, feel free to remove those if you don't want/use them:
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
