@@ -10,6 +10,8 @@ import (
 	"regexp"
 	"sort"
 
+	"golang.org/x/exp/maps"
+
 	"github.com/gobwas/glob"
 )
 
@@ -27,8 +29,12 @@ type Options struct {
 	// Exclude root directory in the result to be returned
 	ExcludeRoot bool
 
-	// Only directories having at least one file matching any of these patterns could be returned
+	// For any (or each, if MatchAllFlagFiles has value true) of these patterns, each of the directories returned must have at least one file matching it.
 	FlagFiles []glob.Glob
+
+	// If true then for each of the pattern in FlagFiles, the directory must have at least one file matching.
+	// If false then the directory just need to have at least one file matching any pattern in FlagFiles.
+	MatchAllFlagFiles bool
 
 	// Additional file that its content would be checked. Use empty string to skip this checking.
 	CheckFile string
@@ -154,12 +160,25 @@ func match(options *Options, dir *dirEntryEx, entries *[]dirEntryEx) bool {
 	}
 
 	foundFlagFile := false
-	for _, entry := range *entries {
-		if anyGlobMatch(options.FlagFiles, entry.Entry.Name()) {
-			foundFlagFile = true
-			break
+	if options.MatchAllFlagFiles { // all globs must have matches
+		allMatched := make(map[int]emptyStruct)
+		for _, entry := range *entries {
+			matched := allMatchingGlobs(options.FlagFiles, entry.Entry.Name())
+			maps.Copy(allMatched, matched)
+		}
+		foundFlagFile = len(allMatched) == len(options.FlagFiles)
+	} else { // just need one glob to have a match
+		for _, entry := range *entries {
+			if anyGlobMatch(options.FlagFiles, entry.Entry.Name()) {
+				foundFlagFile = true
+				break
+			}
 		}
 	}
+	if !foundFlagFile { // no need to test CheckFile
+		return false
+	}
+
 	var checkFileMismatch bool
 	if options.CheckFile == "" {
 		checkFileMismatch = false
@@ -184,5 +203,5 @@ func match(options *Options, dir *dirEntryEx, entries *[]dirEntryEx) bool {
 			}
 		}
 	}
-	return foundFlagFile && !checkFileMismatch
+	return !checkFileMismatch
 }

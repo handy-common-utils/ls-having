@@ -35,6 +35,7 @@ const DEFAULT_EXIT_CODE_WHEN_ERROR = 1
 var optHelp *bool
 var optDepth *int
 var optFlagFiles arrayFlag
+var optMatchAllFlagFiles *bool
 var optCheckFile *string
 var optCheckRegexp *string
 var optCheckInverse *bool
@@ -48,6 +49,7 @@ func setupFlags() {
 	optHelp = flag.Bool("help", false, "show help information")
 	optDepth = flag.Int("depth", DEFAULT_DEPTH, "how deep to look into subdirectories, 0 means only look at root directory, -1 means no limit")
 	flag.Var(&optFlagFiles, "flag-file", "name or `glob` of the flag file, this option can appear multiple times")
+	optMatchAllFlagFiles = flag.Bool("match-all-flag-files", false, "require all (instead of any) of the flag file names/globs to be matched")
 	optCheckFile = flag.String("check-file", "", "`name` of the additional file to check")
 	optCheckRegexp = flag.String("check-regexp", DEFAULT_CHECK_REGEXP, "regular `expression` for testing the content of the check file")
 	optCheckInverse = flag.Bool("check-inverse", false, "regard regular expression not matching as positive")
@@ -61,6 +63,7 @@ func setupFlags() {
 		"h", "help",
 		"d", "depth",
 		"f", "flag-file",
+		"a", "match-all-flag-files",
 		"c", "check-file",
 		"e", "check-regexp",
 		"i", "check-inverse",
@@ -80,6 +83,7 @@ func parseFlags() {
 	*optHelp = false
 	*optDepth = DEFAULT_DEPTH
 	optFlagFiles = nil
+	*optMatchAllFlagFiles = false
 	*optCheckFile = ""
 	*optCheckRegexp = DEFAULT_CHECK_REGEXP
 	*optCheckInverse = false
@@ -126,14 +130,15 @@ func doMain(printOutput func(text string), handleError func(errors []string, pri
 	}
 
 	var options = lsh.Options{
-		Depth:        *optDepth,
-		Excludes:     compileGlobs(optExcludes, filepath.Separator),
-		ExcludeRoot:  *optOnlySubdirectories,
-		FlagFiles:    compileGlobs(optFlagFiles, filepath.Separator),
-		CheckFile:    *optCheckFile,
-		CheckRegexp:  regexp.MustCompile(*optCheckRegexp),
-		CheckInverse: *optCheckInverse,
-		PanicOnError: *optError == OPT_ERROR_PANIC,
+		Depth:             *optDepth,
+		Excludes:          compileGlobs(optExcludes, filepath.Separator),
+		ExcludeRoot:       *optOnlySubdirectories,
+		FlagFiles:         compileGlobs(optFlagFiles, filepath.Separator),
+		MatchAllFlagFiles: *optMatchAllFlagFiles,
+		CheckFile:         *optCheckFile,
+		CheckRegexp:       regexp.MustCompile(*optCheckRegexp),
+		CheckInverse:      *optCheckInverse,
+		PanicOnError:      *optError == OPT_ERROR_PANIC,
 	}
 	var dirs, errors = lsh.LsHaving(&options, optRootDir)
 	if errors != nil {

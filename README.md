@@ -88,6 +88,7 @@ Options:
   -x, --exclude glob              glob of the directories to exclude, this option can appear multiple times
   -f, --flag-file glob            name or glob of the flag file, this option can appear multiple times
   -h, --help                      show help information
+  -a, --match-all-flag-files      require all (instead of any) of the flag file names/globs to be matched
   -n, --no-default-excludes       don't apply default excludes
   -0, --print0                    separate paths in the output with null characters (instead of newline characters)
   -s, --subdirectories-only       don't return root directory even if it meets conditions
@@ -109,7 +110,9 @@ You must specify at least one flag file (`-f`/`--flag-file`) or check file (`-c`
 otherwise *ls-having* would print out an error message and exit.
 
 You can specify multiple flag files by using the `-f`/`--flag-file` option multiple times.
-In such case, directories having **any** of those files or matching **any** of those globs will be returned.
+By default, directories having **any** of those files or matching **any** of those globs will be returned.
+To require **all** of those file names or globs to have matching files in the returned directories,
+use `-a`/`--match-all-flag-files` flag.
 
 If you have check file (`-c`/`--check-file`) specified and want to use the check file as the flag file, you can omit the `-f`/`--flag-file` option.
 In this case, the check file will also be used as the flag file.
@@ -119,6 +122,10 @@ For example, to search for directories containing "package.json" or "build.gradl
 ```shell
 ls-having -f package.json -f 'build.gradle*' -f mvn.xml
 ```
+
+To search for directories containing both "package.json" and "mvn.xml", you could use
+either `ls-having -a -f package.json -f mvn.xml `
+or `ls-having -f package.json -c mvn.xml`.
 
 Please note that if you use `*` in the argument, you may need to quote the argument with single quotes,
 otherwise the shell could interpret and translate it before it reaches the program.
@@ -250,6 +257,8 @@ ls-having -f package.json -c ../australia
 ls-having -f package.json -c ../australia -i
 ```
 
+Flag file names or globs do not support parent or child directories.
+
 ‣ Find all subdirectories (but exclude the current directory `./`)
 having `package.json`,
 and also having `serverless.yml` file contain text `datadog`:
@@ -264,6 +273,10 @@ having `build.gradle*` or `mvn.xml`:
 ```shell
 ls-having -f 'build.gradle*' -f 'mvn.xml' -s /tmp/sample/repo
 ```
+
+If you want to find those subdirectories having both `build.gradle*` and `mvn.xml`, use
+`ls-having -a -f 'build.gradle*' -f 'mvn.xml' -s /tmp/sample/repo`
+or `ls-having -f 'build.gradle*' -c 'mvn.xml' -s /tmp/sample/repo`
 
 ‣ Find all directories in `/tmp/sample/repo`
 having `build.gradle*` and print out their details:

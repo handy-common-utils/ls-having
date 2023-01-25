@@ -188,8 +188,47 @@ testdata/repo1/storage
 `,
 	},
 	{
+		`-a -f build.gradle -f mvn.* testdata/repo1`,
+		"",
+	},
+	{
 		`-f build.gradle -f mvn.* -x **/australia -x **/storage testdata/repo1`,
 		`testdata/repo1/outbound/china/sars
+`,
+	},
+	{
+		`-f build.gradle -f serverless.* testdata/repo1`,
+		`testdata/repo1/inbound
+testdata/repo1/outbound/New Zealand
+testdata/repo1/outbound/australia
+testdata/repo1/outbound/china/sars
+`,
+	},
+	{
+		`-a -f build.gradle -f serverless.* testdata/repo1`,
+		`testdata/repo1/outbound/australia
+testdata/repo1/outbound/china/sars
+`,
+	},
+	{
+		`-a -f build.gradle -f serverless.* -f serverless.ts testdata/repo1`,
+		`testdata/repo1/outbound/china/sars
+`,
+	},
+	{
+		`-f package.json -f serverless.yml testdata/repo1`,
+		`testdata/repo1
+testdata/repo1/inbound
+testdata/repo1/outbound/New Zealand
+testdata/repo1/outbound/australia
+testdata/repo1/outbound/china
+testdata/repo1/outbound/china/mainland
+`,
+	},
+	{
+		`-a -f package.json -f serverless.yml testdata/repo1`,
+		`testdata/repo1/inbound
+testdata/repo1/outbound/New Zealand
 `,
 	},
 	{
