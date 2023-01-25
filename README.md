@@ -69,7 +69,7 @@ ls-having -f package.json
 
 This will search for directories containing a "package.json" file in the current directory and print the names of those directories to the console. You can then use the output of *ls-having* as arguments for other commands, such as `xargs`, to perform actions on those directories.
 
-For more information on how to use *ls-having* and the available options and arguments, you can refer to the tool's [documentation on GitHub](https://github.com/handy-common-utils/ls-having) or run the `ls-having --help` command.
+For more information on how to use *ls-having* and the available options and arguments, keep reading.
 
 ## Usage - as a CLI tool
 
