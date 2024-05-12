@@ -6,7 +6,7 @@ require github.com/gobwas/glob v0.2.3
 
 require (
 	github.com/josephvusich/go-getopt v1.0.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 )
 
 require (
