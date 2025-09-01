@@ -6,8 +6,8 @@ github.com/josephvusich/go-getopt v1.0.0 h1:TF41Gebw/FObLCd7nBNdrTfK6KjbgH63rX1f
 github.com/josephvusich/go-getopt v1.0.0/go.mod h1:OAagKzg9TFAzKU4O+Gpnd3jUInwkXkPzxAyTJJVu3x8=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/stretchr/testify v1.10.0 h1:Xv5erBjTwe/5IxqUQTdXv5kgmIvbHo3QQyRwhJsOfJA=
-github.com/stretchr/testify v1.10.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
+github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=
+github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
 golang.org/x/exp v0.0.0-20230124195608-d38c7dcee874 h1:kWC3b7j6Fu09SnEBr7P4PuQyM0R6sqyH9R+EjIvT1nQ=
 golang.org/x/exp v0.0.0-20230124195608-d38c7dcee874/go.mod h1:CxIveKay+FTh1D0yPZemJVgC/95VzuuOLq5Qi4xnoYc=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
