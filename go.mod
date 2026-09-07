@@ -1,8 +1,8 @@
 module github.com/handy-common-utils/ls-having
 
-go 1.19
+go 1.22.0
 
-require github.com/gobwas/glob v0.2.3
+require github.com/gobwas/glob v1.0.0
 
 require (
 	github.com/josephvusich/go-getopt v1.0.0
